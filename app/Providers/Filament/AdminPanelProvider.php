@@ -6,8 +6,10 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\Storage;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Auth\CustomRegister;
 use Illuminate\Session\Middleware\StartSession;
@@ -22,6 +24,8 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class AdminPanelProvider extends PanelProvider
 {
+
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -30,6 +34,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->registration(CustomRegister::class)
+            ->profile()
+            // ->settings()
             ->colors([
                 'primary' => Color::Cyan,
             ])
@@ -63,8 +69,15 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->topNavigation()
             ->userMenuItems([
+                'profile' => MenuItem::make()->label('Profile')
+                    ->icon('heroicon-o-user-circle'),
+
                 'logout' => MenuItem::make()->label('Log out'),
                 // ...
             ]);
+
+
+        }
     }
-}
+
+

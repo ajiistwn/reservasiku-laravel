@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'business', 'user']);
             $table->string('city')->nullable();
             $table->string('country')->nullable();
+            $table->string('image')->nullable()->default('uploads/profile/imageDummy/avatars.png');
             $table->rememberToken();
             $table->timestamps();
         });

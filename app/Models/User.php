@@ -3,11 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements
+    FilamentUser,
+    HasAvatar // MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -46,4 +51,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->image ? Storage::url('/' . $this->image) : asset('default-avatar.png');
+    }
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->role === 'admin' || $this->role === 'business'; // Bisa disesuaikan, misalnya cek role atau permission
+    }
+
+
 }
