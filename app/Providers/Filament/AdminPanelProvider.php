@@ -5,13 +5,16 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use Filament\pages\Profile;
 use Filament\PanelProvider;
+use Pest\ArchPresets\Custom;
 use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Storage;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Auth\CustomRegister;
+use App\Filament\Pages\Auth\CustomEditProfile;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -34,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->registration(CustomRegister::class)
-            ->profile()
+            ->profile(CustomEditProfile::class)
             // ->settings()
             ->colors([
                 'primary' => Color::Cyan,

@@ -59,6 +59,10 @@ class User extends Authenticatable implements
     {
         return $this->role === 'admin' || $this->role === 'business'; // Bisa disesuaikan, misalnya cek role atau permission
     }
-
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
+    
 
 }
