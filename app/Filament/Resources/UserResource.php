@@ -24,6 +24,12 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    // public static function canAccess(): bool
+    // {
+    //     return auth()->user()?->role === 'admin';
+    // }
+
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count() ;
@@ -77,6 +83,7 @@ class UserResource extends Resource
                     ->dehydrated(true)
                     ->imageEditor()
                     ->downloadable()
+                    ->openable()
                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, $state, $component) {
                         $record = $component->getRecord();
                         $oldPath = $record->image ?? null;
@@ -141,15 +148,7 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
-    public static function mutateFormDataBeforeSave(array $data, $record): array
-    {
-        // Cek kalau gambar lama ada dan sekarang udah gak ada (berarti dihapus manual lewat silang)
-        if ($record && $record->image && empty($data['image'])) {
-            if (Storage::disk('public')->exists($record->image)) {
-                Storage::disk('public')->delete($record->image);
-            }
-        }
 
-        return $data;
-    }
+
+
 }

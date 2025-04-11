@@ -55,14 +55,45 @@ class User extends Authenticatable implements
     {
         return $this->image ? Storage::url('/' . $this->image) : asset('default-avatar.png');
     }
+
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return $this->role === 'admin' || $this->role === 'business'; // Bisa disesuaikan, misalnya cek role atau permission
     }
+
     public function properties()
     {
         return $this->hasMany(Property::class);
     }
-    
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    protected static function booted()
+    {
+        static::saved(function ($user) {
+            $oldImage = $user->getOriginal('image');
+            $newImage = $user->image;
+
+            if ($oldImage && $oldImage !== $newImage) {
+                logger()->info('Deleting old profile image: ' . $oldImage);
+
+                if (Storage::disk('public')->exists($oldImage)) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
+        });
+
+        static::deleting(function ($user) {
+            $file = $user->image;
+            if ($file) {
+                logger()->info('Deleting user profile image: ' . $file);
+                    Storage::disk('public')->delete($file);
+            }
+
+        });
+    }
 
 }

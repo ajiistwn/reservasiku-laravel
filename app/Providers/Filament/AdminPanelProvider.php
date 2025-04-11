@@ -11,6 +11,7 @@ use Pest\ArchPresets\Custom;
 use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\Storage;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Auth\CustomRegister;
@@ -28,10 +29,16 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 class AdminPanelProvider extends PanelProvider
 {
 
-
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->navigationItems([
+                NavigationItem::make('dashboard')
+                    ->label('Dashboard')
+                    ->url('/admin')
+                    ->icon('heroicon-o-bolt')
+                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.pages.dashboard')),
+            ])
             ->default()
             ->id('admin')
             ->path('admin')

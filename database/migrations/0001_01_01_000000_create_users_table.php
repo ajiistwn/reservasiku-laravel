@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // 2025_04_07_101346_create_media_table
     /**
      * Run the migrations.
      */
