@@ -31,9 +31,10 @@ class Property extends Model implements HasMedia
         return $this->hasMany(Room::class);
     }
 
-    public function reservations()
+
+    public function facilities()
     {
-        return $this->hasMany(Reservation::class);
+        return $this->belongsToMany(Facility::class, 'facility_property');
     }
 
     public static function booted()

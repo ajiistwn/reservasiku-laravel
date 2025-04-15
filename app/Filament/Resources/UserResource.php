@@ -24,10 +24,6 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    // public static function canAccess(): bool
-    // {
-    //     return auth()->user()?->role === 'admin';
-    // }
 
 
     public static function getNavigationBadge(): ?string

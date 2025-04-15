@@ -9,7 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Facility;
 
 use Filament\Forms\Components\Repeater;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +49,15 @@ class PropertyResource extends Resource
                     ->required()
                     ->label('Address Detail')
                     ->columnSpan(2),
+                Forms\Components\Select::make('facilities')
+                    ->multiple()
+                    ->label('Fasilitas Properti')
+                    ->relationship('facilities', 'name')
+                    ->columnSpan(2)
+                    ->options(function () {
+                        return Facility::where('property', true)
+                            ->pluck('name', 'id');
+                    }),
                 Forms\Components\FileUpload::make('media')
                     ->label('Media Upload')
                     ->disk('public')
@@ -61,6 +70,7 @@ class PropertyResource extends Resource
                     ->reorderable()
                     ->appendFiles()
                     ->openable(),
+
 
                 Repeater::make('rooms')
                     ->relationship()
@@ -77,6 +87,15 @@ class PropertyResource extends Resource
                         ->required()
                         ->label('Model or Beds Type')
                         ->columnSpan(2),
+                    Forms\Components\Select::make('facilities')
+                        ->multiple()
+                        ->label('Fasilitas room')
+                        ->relationship('facilities', 'name')
+                        ->columnSpan(2)
+                        ->options(function () {
+                            return Facility::where('property', true)
+                                ->pluck('name', 'id');
+                        }),
                     Forms\Components\TextInput::make('unit')
                         ->required()
                         ->label('Unit')

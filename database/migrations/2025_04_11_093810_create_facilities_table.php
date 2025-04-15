@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('propery');
+            $table->string('icon')->nullable();
+            $table->boolean('property'); 
             $table->boolean('room');
             $table->timestamps();
         });
