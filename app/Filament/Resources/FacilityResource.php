@@ -17,6 +17,17 @@ class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
+    public static function getNavigationSort(): ?int
+    {
+        return 2;
+    }
+
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ;
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     public static function form(Form $form): Form

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('country');
             $table->string('city');
-            $table->decimal('price')->nullable();
+            $table->decimal('price',12, 2)->nullable();
             $table->string('address');
             $table->text('description');
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(false);
             $table->json('media')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

@@ -25,6 +25,21 @@ class PropertyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
+    public static function getNavigationSort(): ?int
+    {
+        return 1;
+    }
+
+
+    public static function getNavigationBadge(): ?string
+    {
+        if(Auth::user()->role === 'admin') {
+            return static::getModel()::count();
+        }
+
+        return static::getModel()::where('user_id', Auth::id())->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -93,7 +108,7 @@ class PropertyResource extends Resource
                         ->relationship('facilities', 'name')
                         ->columnSpan(2)
                         ->options(function () {
-                            return Facility::where('property', true)
+                            return Facility::where('room', true)
                                 ->pluck('name', 'id');
                         }),
                     Forms\Components\TextInput::make('unit')
@@ -131,17 +146,26 @@ class PropertyResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(Property::query()->where('user_id', Auth::id()))
+            ->query(function () {
+                $query = Property::query();
+            
+                if (Auth::user()->role !== 'admin') {
+                    $query->where('user_id', Auth::id());
+                }
+            
+                return $query;
+            })
             ->columns([
                 //
 
+                Tables\Columns\ImageColumn::make('media'),
                 Tables\Columns\TextColumn::make('name')->label('Property Name'),
-                Tables\Columns\TextColumn::make('description')->label('Description'),
+                // Tables\Columns\TextColumn::make('description')->label('Description'),
                 Tables\Columns\TextColumn::make('country')->label('Country'),
                 Tables\Columns\TextColumn::make('city')->label('City'),
                 Tables\Columns\TextColumn::make('price')->label('Price'),
-                Tables\Columns\TextColumn::make('address')->label('address'),
-                Tables\Columns\ImageColumn::make('media'),
+                // Tables\Columns\TextColumn::make('address')->label('address'),
+                Tables\Columns\ToggleColumn::make('status'),
 
 
 

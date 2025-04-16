@@ -78,6 +78,10 @@ class User extends Authenticatable implements
             $newImage = $user->image;
 
             if ($oldImage && $oldImage !== $newImage) {
+                if($oldImage === 'uploads/profile/imageDummy/avatars.png') {
+                    return;
+                }
+
                 logger()->info('Deleting old profile image: ' . $oldImage);
 
                 if (Storage::disk('public')->exists($oldImage)) {
@@ -88,7 +92,9 @@ class User extends Authenticatable implements
 
         static::deleting(function ($user) {
             $file = $user->image;
-            if ($file) {
+
+
+            if ($file && $file !== 'uploads/profile/imageDummy/avatars.png') {
                 logger()->info('Deleting user profile image: ' . $file);
                     Storage::disk('public')->delete($file);
             }
