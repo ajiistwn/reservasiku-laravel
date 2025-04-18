@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('country');
             $table->string('city');
-            $table->decimal('price',12, 2)->nullable();
+            $table->decimal('price_property',12, 2)->nullable();
             $table->string('address');
             $table->text('description');
             $table->boolean('status')->default(false);

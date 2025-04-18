@@ -10,6 +10,8 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Facility;
+use Filament\Forms\Components\Set;
+use Filament\Forms\Components\Get;
 
 use Filament\Forms\Components\Repeater;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +41,7 @@ class PropertyResource extends Resource
 
         return static::getModel()::where('user_id', Auth::id())->count();
     }
+
 
     public static function form(Form $form): Form
     {
@@ -73,6 +76,29 @@ class PropertyResource extends Resource
                         return Facility::where('property', true)
                             ->pluck('name', 'id');
                     }),
+                Forms\Components\TextInput::make('price_property')
+                    ->prefix('Rp')
+                    ->numeric()
+                    ->minValue(0)
+                    ->required()
+                    ->label('Price')
+                    ->columnSpan(2)
+                    ->placeholder(function (callable $set, callable $get) {
+                        $rooms = $get('rooms') ?? [];
+                        $total = 0;
+
+                        foreach ($rooms as $room) {
+                            $unit = isset($room['unit']) ? (int) $room['unit'] : 0;
+                            $price = isset($room['price']) ? (int) $room['price'] : 0;
+                            $total += $unit * $price;
+                        }
+
+                        if ($total !== null) {
+                            $set('price_property', $total);
+                        }
+                    })
+                    ->helperText('The price of this property is automatic if you have added the rooms you have along with their prices and quantities. you can change it if you want to determine your own price. we are not responsible for your business risks!.'),
+                    // ->readonly(),
                 Forms\Components\FileUpload::make('media')
                     ->label('Media Upload')
                     ->disk('public')
@@ -114,11 +140,18 @@ class PropertyResource extends Resource
                     Forms\Components\TextInput::make('unit')
                         ->required()
                         ->label('Unit')
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->reactive(),
                     Forms\Components\TextInput::make('price')
+                        ->prefix('Rp')
+                        ->reactive()
+                        ->numeric()
+                        ->minValue(0)
                         ->required()
                         ->label('Price')
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->reactive(),
+
                     Forms\Components\FileUpload::make('media')
                         ->label('Media Upload')
                         ->disk('public')
@@ -133,6 +166,7 @@ class PropertyResource extends Resource
                         ->openable()
 
                     ])
+                    // ->live()
                     ->grid(2)
                     ->columnSpan(2)
 
@@ -148,11 +182,11 @@ class PropertyResource extends Resource
         return $table
             ->query(function () {
                 $query = Property::query();
-            
+
                 if (Auth::user()->role !== 'admin') {
                     $query->where('user_id', Auth::id());
                 }
-            
+
                 return $query;
             })
             ->columns([
