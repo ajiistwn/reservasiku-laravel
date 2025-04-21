@@ -17,6 +17,10 @@ class CustomEditProfile extends BaseEditProfile
                 $this->getNameFormComponent(),
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Phone')
+                    ->tel()
+                    ->required(),
                 Forms\Components\TextInput::make('city')
                     ->label('City')
                     ->required(),

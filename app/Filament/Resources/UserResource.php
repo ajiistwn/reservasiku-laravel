@@ -26,7 +26,7 @@ class UserResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return 3;
+        return 4;
     }
 
 
@@ -34,7 +34,7 @@ class UserResource extends Resource
     {
         return static::getModel()::count() ;
     }
-    
+
     protected static ?string $navigationBadgeTooltip = 'Count of users';
 
     public static function form(Form $form): Form

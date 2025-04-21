@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Aji Setiawan',
                 'email' => 'ajiisetiawan09@gmail.com',
+                'phone' => '0896359985',
                 'password' => bcrypt('Zenature09_'),
                 'role' => 'admin',
                 'country' => 'Indonesia',
@@ -30,6 +31,7 @@ class UserSeeder extends Seeder
 
                 'name' => 'Afdan',
                 'email' => 'afdan@gmail.com',
+                'phone' => '08123783789',
                 'password' => bcrypt('password'),
                 'role' => 'business',
                 'country' => 'Indonesia',
@@ -42,6 +44,7 @@ class UserSeeder extends Seeder
 
                 'name' => 'Alvin',
                 'email' => 'alvin@gmail.com',
+                'phone' => '08543456789',
                 'password' => bcrypt('password'),
                 'role' => 'business',
                 'country' => 'Indonesia',
@@ -53,6 +56,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'jhon doe',
                 'email' => 'jhon@gmail.com',
+                'phone' => '08543456129',
                 'password' => bcrypt('password'),
                 'role' => 'user',
                 'country' => 'Indonesia',
@@ -64,6 +68,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Erik',
                 'email' => 'erik@gmail.com',
+                'phone' => '08234456129',
                 'password' => bcrypt('password'),
                 'role' => 'user',
                 'country' => 'Indonesia',
@@ -75,6 +80,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Linda',
                 'email' => 'linda@gmail.com',
+                'phone' => '08134256129',
                 'password' => bcrypt('password'),
                 'role' => 'user',
                 'country' => 'Indonesia',
@@ -86,6 +92,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Kurnia',
                 'email' => 'kurnia@gmail.com',
+                'phone' => '081234561293',
                 'password' => bcrypt('password'),
                 'role' => 'user',
                 'country' => 'Indonesia',

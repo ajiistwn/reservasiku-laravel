@@ -34,7 +34,7 @@ class ReservationResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return 4;
+        return 2;
     }
 
     public static function getNavigationBadge(): ?string
@@ -43,7 +43,9 @@ class ReservationResource extends Resource
             return static::getModel()::count();
         }
 
-        return static::getModel()::where('user_id', Auth::id())->count();
+        return static::getModel()::whereHas('room.property', function ($query) {
+            $query->where('user_id', Auth::id());
+        })->count();
     }
 
     public static function form(Form $form): Form
@@ -224,9 +226,11 @@ class ReservationResource extends Resource
                     ->columnSpan(1)
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'failed' => 'danger',
+                        'failure' => 'danger',
+                        'expire' => 'danger',
+                        'cancelled' => 'gray',
                         'pending' => 'warning',
-                        'completed' => 'success',
+                        'success' => 'success',
                     })
                     ->icon('heroicon-o-check-circle'),
             ]);
@@ -236,24 +240,75 @@ class ReservationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(function () {
+                $query = Reservation::query();
+
+                if (Auth::user()->role !== 'admin') {
+                    $query->whereHas('room.property', function ($query) {
+                        $query->where('user_id', Auth::id());
+                    });
+                }
+
+                return $query;
+            })
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('User')
                     ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('room.name')
+                    ->searchable()
+                    ->description(function ($record) {
+                        $emaill = $record->user->email;
+                        $phone = $record->user->country;
+                        return "email: {$emaill}, phone: {$phone}";
+                    })
+                    ->icon('heroicon-s-user'),
+                Tables\Columns\TextColumn::make('Property')
                     ->label('Room')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('check_in')
-                    ->label('Check In')
-                    ->sortable()
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('check_out')
-                    ->label('Check Out')
-                    ->sortable()
-                    ->dateTime(),
+                    ->searchable()
+                    ->default(function ($record) {
+                        $room = $record->room->name;
+                        $property = $record->room->property->name;
+                        return "{$room} at {$property}";
+                    })
+                    ->description(function ($record) {
+                        $country = $record->room->property->country;
+                        $city = $record->room->property->city;
+                        $address = $record->room->property->address;
+
+                        return "{$address}, {$city}, {$country}";
+                    }),
+                Tables\Columns\TextColumn::make('reservation_status')
+                    ->label('Reservation Status')
+                    ->default(function ($record) {
+                        $checkIn = $record->check_in;
+                        $checkOut = $record->check_out;
+                        $now = now();
+                        if ($checkIn < $now && $checkOut > $now) {
+                            return 'reservation';
+                        }
+                        return 'available';
+                    })
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'available' => 'success',
+                        'reservation' => 'warning',
+                    })
+                    ->description(function ($record) {
+                        $checkIn = Carbon::parse($record->check_in)->format('d M Y H:i');
+                        $checkOut = Carbon::parse($record->check_out)->format('d M Y H:i');
+                        return "{$checkIn} - {$checkOut}";
+                    }),
+                Tables\Columns\TextColumn::make('transaction.status')
+                    ->label('Payment Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'failure' => 'danger',
+                        'expire' => 'danger',
+                        'cancelled' => 'gray',
+                        'pending' => 'warning',
+                        'success' => 'success',
+                    }),
             ])
             ->filters([
                 //
