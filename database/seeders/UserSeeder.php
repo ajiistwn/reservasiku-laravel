@@ -73,7 +73,7 @@ class UserSeeder extends Seeder
                 'role' => 'user',
                 'country' => 'Indonesia',
                 'city' => 'jakarta',
-                'image' => 'uploads/profile/imageDummy/erik.jpg',
+                'image' => 'uploads/profile/imageDummy/erik.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

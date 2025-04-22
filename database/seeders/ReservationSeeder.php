@@ -32,6 +32,31 @@ class ReservationSeeder extends Seeder
                 'created_at' => '2025-01-15 13:00:00',
                 'updated_at' => '2025-01-15 13:00:00',
             ],
+
+            [
+                'room_id' => 5,
+                'user_id' => 4,
+                'check_in' => '2025-01-05 14:00:00',
+                'check_out' => '2025-01-10 12:00:00',
+                'created_at' => '2025-01-05 14:00:00',
+                'updated_at' => '2025-01-05 14:00:00',
+            ],
+            [
+                'room_id' => 6,
+                'user_id' => 4,
+                'check_in' => '2025-01-15 13:00:00',
+                'check_out' => '2025-01-18 11:00:00',
+                'created_at' => '2025-01-15 13:00:00',
+                'updated_at' => '2025-01-15 13:00:00',
+            ],
+            [
+                'room_id' => 7,
+                'user_id' => 5,
+                'check_in' => '2025-01-25 14:00:00',
+                'check_out' => '2025-01-28 12:00:00',
+                'created_at' => '2025-01-25 14:00:00',
+                'updated_at' => '2025-01-25 14:00:00',
+            ],
             // Februari 2025
             [
 
@@ -49,6 +74,30 @@ class ReservationSeeder extends Seeder
                 'check_out' => '2025-02-22 11:00:00',
                 'created_at' => '2025-02-20 14:00:00',
                 'updated_at' => '2025-02-20 14:00:00',
+            ],
+            [
+                'room_id' => 5,
+                'user_id' => 5,
+                'check_in' => '2025-02-07 15:00:00',
+                'check_out' => '2025-02-10 12:00:00',
+                'created_at' => '2025-02-07 15:00:00',
+                'updated_at' => '2025-02-07 15:00:00',
+            ],
+            [
+                'room_id' => 5,
+                'user_id' => 4,
+                'check_in' => '2025-02-20 14:00:00',
+                'check_out' => '2025-02-22 11:00:00',
+                'created_at' => '2025-02-20 14:00:00',
+                'updated_at' => '2025-02-20 14:00:00',
+            ],
+            [
+                'room_id' => 6,
+                'user_id' => 6,
+                'check_in' => '2025-02-25 13:00:00',
+                'check_out' => '2025-02-28 11:00:00',
+                'created_at' => '2025-02-25 13:00:00',
+                'updated_at' => '2025-02-25 13:00:00',
             ],
             // Maret 2025
             [
@@ -68,6 +117,30 @@ class ReservationSeeder extends Seeder
                 'created_at' => '2025-03-15 15:00:00',
                 'updated_at' => '2025-03-15 15:00:00',
             ],
+            [
+                'room_id' => 7,
+                'user_id' => 1,
+                'check_in' => '2025-03-10 14:30:00',
+                'check_out' => '2025-03-12 10:00:00',
+                'created_at' => '2025-03-10 14:30:00',
+                'updated_at' => '2025-03-10 14:30:00',
+            ],
+            [
+                'room_id' => 7,
+                'user_id' => 6,
+                'check_in' => '2025-03-15 15:00:00',
+                'check_out' => '2025-03-18 12:00:00',
+                'created_at' => '2025-03-15 15:00:00',
+                'updated_at' => '2025-03-15 15:00:00',
+            ],
+            [
+                'room_id' => 6,
+                'user_id' => 7,
+                'check_in' => '2025-03-25 13:00:00',
+                'check_out' => '2025-03-27 11:00:00',
+                'created_at' => '2025-03-25 13:00:00',
+                'updated_at' => '2025-03-25 13:00:00',
+            ],
             // April 2025
             [
                 'room_id' => 4,
@@ -84,6 +157,30 @@ class ReservationSeeder extends Seeder
                 'check_out' => '2025-04-22 11:00:00',
                 'created_at' => '2025-04-20 14:00:00',
                 'updated_at' => '2025-04-20 14:00:00',
+            ],
+            [
+                'room_id' => 5 ,
+                'user_id' => 7,
+                'check_in' => '2025-04-05 13:00:00',
+                'check_out' => '2025-04-08 11:00:00',
+                'created_at' => '2025-04-05 13:00:00',
+                'updated_at' => '2025-04-05 13:00:00',
+            ],
+            [
+                'room_id' => 6,
+                'user_id' => 6,
+                'check_in' => '2025-04-20 14:00:00',
+                'check_out' => '2025-04-22 11:00:00',
+                'created_at' => '2025-04-20 14:00:00',
+                'updated_at' => '2025-04-20 14:00:00',
+            ],
+            [
+                'room_id' => 8,
+                'user_id' => 5,
+                'check_in' => '2025-04-27 15:00:00',
+                'check_out' => '2025-04-30 10:00:00',
+                'created_at' => '2025-04-27 15:00:00',
+                'updated_at' => '2025-04-27 15:00:00',
             ],
         ];
         DB::table('reservations')->insert($reservations);
