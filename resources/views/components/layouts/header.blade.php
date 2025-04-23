@@ -25,9 +25,7 @@
                     <li>
                         <a href="#about" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-white lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
                     </li>
-                    <li>
-                        <a href="#contact" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-white lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Contact us</a>
-                    </li>
+
                     </li>
                 </ul>
             </div>
