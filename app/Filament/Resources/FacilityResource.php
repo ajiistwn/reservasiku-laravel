@@ -19,7 +19,7 @@ class FacilityResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return 2;
+        return 3;
     }
 
 
@@ -45,10 +45,10 @@ class FacilityResource extends Resource
                     ->columnSpan(1),
                 Forms\Components\Toggle::make('property')
                     ->label('Property'),
-                    
+
                 Forms\Components\Toggle::make('room')
                     ->label('Room')
-                    
+
             ]);
     }
 
@@ -61,7 +61,7 @@ class FacilityResource extends Resource
                 Tables\Columns\TextColumn::make('icon')->label('Icon'),
                 Tables\Columns\ToggleColumn::make('property'),
                 Tables\Columns\ToggleColumn::make('room')
-                        
+
             ])
             ->filters([
                 //

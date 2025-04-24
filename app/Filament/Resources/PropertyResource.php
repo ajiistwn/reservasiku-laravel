@@ -10,11 +10,14 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Facility;
+use Filament\Forms\Components\Set;
+use Filament\Forms\Components\Get;
 
 use Filament\Forms\Components\Repeater;
 use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Filters\QueryBuilder;
 use App\Filament\Resources\PropertyResource\Pages;
+use Faker\Core\Color;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 
@@ -39,6 +42,7 @@ class PropertyResource extends Resource
 
         return static::getModel()::where('user_id', Auth::id())->count();
     }
+
 
     public static function form(Form $form): Form
     {
@@ -73,6 +77,29 @@ class PropertyResource extends Resource
                         return Facility::where('property', true)
                             ->pluck('name', 'id');
                     }),
+                Forms\Components\TextInput::make('price_property')
+                    ->prefix('Rp')
+                    ->numeric()
+                    ->minValue(0)
+                    ->required()
+                    ->label('Price')
+                    ->columnSpan(2)
+                    ->placeholder(function (callable $set, callable $get) {
+                        $rooms = $get('rooms') ?? [];
+                        $total = 0;
+
+                        foreach ($rooms as $room) {
+                            $unit = isset($room['unit']) ? (int) $room['unit'] : 0;
+                            $price = isset($room['price']) ? (int) $room['price'] : 0;
+                            $total += $unit * $price;
+                        }
+
+                        if ($total !== null) {
+                            $set('price_property', $total);
+                        }
+                    })
+                    ->helperText('The price of this property is automatic if you have added the rooms you have along with their prices and quantities. you can change it if you want to determine your own price. we are not responsible for your business risks!.'),
+                    // ->readonly(),
                 Forms\Components\FileUpload::make('media')
                     ->label('Media Upload')
                     ->disk('public')
@@ -114,11 +141,18 @@ class PropertyResource extends Resource
                     Forms\Components\TextInput::make('unit')
                         ->required()
                         ->label('Unit')
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->reactive(),
                     Forms\Components\TextInput::make('price')
+                        ->prefix('Rp')
+                        ->reactive()
+                        ->numeric()
+                        ->minValue(0)
                         ->required()
                         ->label('Price')
-                        ->columnSpan(2),
+                        ->columnSpan(2)
+                        ->reactive(),
+
                     Forms\Components\FileUpload::make('media')
                         ->label('Media Upload')
                         ->disk('public')
@@ -133,6 +167,7 @@ class PropertyResource extends Resource
                         ->openable()
 
                     ])
+                    // ->live()
                     ->grid(2)
                     ->columnSpan(2)
 
@@ -148,24 +183,51 @@ class PropertyResource extends Resource
         return $table
             ->query(function () {
                 $query = Property::query();
-            
+
                 if (Auth::user()->role !== 'admin') {
                     $query->where('user_id', Auth::id());
                 }
-            
+
                 return $query;
             })
             ->columns([
                 //
 
-                Tables\Columns\ImageColumn::make('media'),
-                Tables\Columns\TextColumn::make('name')->label('Property Name'),
-                // Tables\Columns\TextColumn::make('description')->label('Description'),
-                Tables\Columns\TextColumn::make('country')->label('Country'),
-                Tables\Columns\TextColumn::make('city')->label('City'),
-                Tables\Columns\TextColumn::make('price')->label('Price'),
-                // Tables\Columns\TextColumn::make('address')->label('address'),
-                Tables\Columns\ToggleColumn::make('status'),
+                Tables\Columns\ImageColumn::make('media')
+                    ->stacked()
+                    ->overlap(2)
+                    ->limit(3)
+                    ->limitedRemainingText(size: 'lg')
+                    ->circular(),
+                Tables\Columns\TextColumn::make('name')->label('Property Name')
+                    ->description(function ($record) {
+                        $address = $record->address;
+                        $city = $record->city;
+                        $country = $record->country;
+                        return "$address, $city, $country";
+                    }),
+                Tables\Columns\TextColumn::make('price_property')->label('Price')->money('IDR'),
+                Tables\Columns\TextColumn::make('rooms_count')->label('Rooms Count')
+                    ->counts('rooms')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('available')->label('Available Rooms')
+                    ->default(function ($record) {
+                        $now = now();
+                        $availableRooms = $record->rooms->filter(function ($room) use ($now) {
+                            return !$room->reservations()
+                                ->whereHas('transaction', function ($query) {
+                                    $query->where('status', '!=', 'cancelled');
+                                })
+                                ->where('check_in', '<=', $now)
+                                ->where('check_out', '>=', $now)
+                                ->exists();
+                        });
+
+                        return $availableRooms->count();
+                    })
+                    ->color('success')
+                    ->badge(),
+
 
 
 

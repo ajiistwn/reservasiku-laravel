@@ -9,6 +9,8 @@ class Room extends Model
 {
 
     //
+    protected $table = 'rooms';
+
     protected $guarded = [];
 
     protected $casts = [
@@ -25,6 +27,12 @@ class Room extends Model
     {
         return $this->belongsToMany(Facility::class, 'facility_room');
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
 
 
 

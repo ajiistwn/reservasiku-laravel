@@ -13,6 +13,10 @@ class CustomRegister extends BaseRegister
         return $form
             ->schema([
                 $this->getNameFormComponent(),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Phone')
+                    ->tel()
+                    ->required(),
                 Forms\Components\TextInput::make('country')
                     ->label('Country')
                     ->required(),

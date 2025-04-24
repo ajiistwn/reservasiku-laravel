@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 10, 2);
+            $table->enum('status', ['success','pending', 'failure', 'cancelled', 'expire'])->default('pending');
             $table->timestamps();
         });
     }
