@@ -1,5 +1,7 @@
 {{-- {{dd($properties);}} --}}
+
 <x-layouts.app>
+
     {{-- start navbar --}}
     {{-- start home --}}
     <section id="home" class="relative px-6 isolate pt-14 lg:px-8 bg-center bg-no-repeat bg-[url('/public/img/homeImage.jpeg')] bg-gray-400 bg-cover bg-blend-multiply py-30 ">
@@ -71,7 +73,7 @@
             <p>Explore your world with my reservation, you are happy we are calm</p>
           </div>
           {{-- container card --}}
-          <div class="grid gap-4 mb-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4 ">
+          <div id="container-card" class="grid gap-4 mb-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4 ">
             {{-- card --}}
             @foreach ($properties as $property)
             {{-- {{dd($property);}} --}}
@@ -82,7 +84,7 @@
                              <!-- Item 1 -->
                              @foreach ($property->media as $item)
                                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                    <img src="{{$item}}" class="absolute top-0 left-0 block object-cover w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                                    <img src="{{asset($item)}}" class="absolute top-0 left-0 block object-cover w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{$item}}" />
                                 </div>
                              @endforeach
                         </div>
@@ -107,17 +109,29 @@
                     <div class="flex flex-col h-full px-5 py-4">
                         <div class="my-1">
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300"> {{$property->city}}, {{$property->country}}</span>
-                            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">Availible {{ $property->roomAvailable}}</span>
-
+                            @if ($property->roomAvailable !== 0)
+                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">
+                                    Available {{ $property->roomAvailable }}
+                                </span>
+                            @else
+                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">
+                                    Not Available
+                                </span>
+                            @endif
                         </div>
                         <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
                             {{ $property->name }}
                         </a>
                         <p>{{$property->address}}</p>
-                        {{-- {{dd($property->priceRange);}}s --}}
+                        {{-- {{dd($property->priceRange);}} --}}
                         <div class="relative inset-x-0 bottom-0 flex ">
                             <p class="font-extrabold text-gray-900 text-1xl dark:text-white">
-                                {{count($property->priceRange) > 1 ? "Rp." . number_format($property->priceRange[0], 0, ',', '.').' - '."Rp." . number_format($property->priceRange[1], 0, ',', '.') : "Rp." . number_format($property->priceRange[0], 0, ',', '.')}}
+                                @if (count($property->priceRange) !== 0 )
+                                    {{
+                                        # code...
+                                        count($property->priceRange) > 1 ? "Rp." . number_format($property->priceRange[0], 0, ',', '.').' - '."Rp." . number_format($property->priceRange[1], 0, ',', '.') : "Rp." . number_format($property->priceRange[0], 0, ',', '.')
+                                    }}
+                                @endIf
                             </p>
                         </div>
 
@@ -125,225 +139,12 @@
                 </div>
             @endforeach
 
-            {{-- <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                <div class="w-full h-56">
-                    <a href="#">
-                    <img class="h-full mx-auto dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="" />
-
-                </div>
-                <div class="flex flex-col h-full pt-6 ">
-
-
-                    <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</a>
-
-
-
-
-                    <ul class="flex items-center block gap-4 mt-2 ">
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Fast Delivery</p>
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
-                    </li>
-                    </ul>
-
-                    <div class="relative inset-x-0 bottom-0 flex ">
-                        <p class="text-2xl font-extrabold text-gray-900 dark:text-white">$1,699</p>
-                    </div>
-
-                </div>
-            </div> --}}
           </div>
           <div class="w-full text-center">
-            <button type="button" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
+
+
+                <button id="loadMore" type="button"  class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
+
           </div>
         </div>
         <!-- Filter modal -->
@@ -373,6 +174,34 @@
     {{-- end about us--}}
 
 
+    <script >
+    //    var ENDPOINT = "{{route('index')}}";
+       var page = 1; // halaman pertama
 
+        // Saat tombol Load More diklik
+        window.onload = function() {
+            $('#loadMore').click(function() {
+                page++;
+                loadMore(page);
+            });
+
+            function loadMore(page) {
+                $.ajax({
+                    url: "{{ route('loadMore') }}",
+                    type: "get",
+                    data: {
+                        page: page
+                    },
+                    dataType: "html",
+                    success: function(data) {
+                        console.log(data);
+                        $('#container-card').append(data);
+                    },
+
+                })
+            }
+        }
+
+    </script>
 
 </x-layouts.app>

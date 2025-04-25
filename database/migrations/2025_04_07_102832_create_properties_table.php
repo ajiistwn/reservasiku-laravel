@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('price_property',12, 2)->nullable();
             $table->string('address');
             $table->text('description');
-            $table->boolean('status')->default(false);
             $table->json('media')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

@@ -32,3 +32,10 @@ window.addEventListener("scroll", function () {
         logo.src = "/logo-horizontal-white.png";
     }
 });
+
+const observer = lozad('.lozad', {
+    loaded: function(el) {
+      el.classList.add('loaded');
+    }
+});
+observer.observe();

@@ -13,3 +13,5 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 
 Route::get('/', [BaseController::class, 'index'])->name('index');
+Route::get('/load-more', [BaseController::class, 'loadMore'])->name('loadMore');
+Route::get('/{id}', [BaseController::class, 'detail'])->name('detail');
