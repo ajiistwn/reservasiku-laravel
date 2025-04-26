@@ -31,16 +31,21 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        return view('auth.register',['role' => 'user']);  
+        return view('auth.register',['role' => 'user']);
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect('/auth/login')->with('success', 'Logout berhasil');
     }
 
      // Proses registrasi
-     public function register(Request $request)
-     {
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed', 
+            'password' => 'required|string|min:8|confirmed',
             'city' => 'required|string|max:100',
             'country' => 'required|string|max:100',
         ]);
@@ -50,6 +55,7 @@ class AuthController extends Controller
             return redirect('/auth/register')
                         ->withErrors($validator)
                         ->withInput();
+
         }
 
         // Buat user baru
@@ -64,5 +70,15 @@ class AuthController extends Controller
         // Auth()->login($user);
 
         return redirect()->route('welcome'); // Sesuaikan rute tujuan setelah registrasi
+    }
+
+    public function edit()
+    {
+        return view('auth.edit');
+    }
+
+    public function show(Request $request)
+    {
+        return view('auth.profile'); // Adjust the view as necessary
     }
 }

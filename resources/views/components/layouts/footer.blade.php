@@ -1,3 +1,4 @@
+
 <footer class="p-4 bg-white sm:p-6 dark:bg-gray-800">
     <div class="max-w-screen-xl mx-auto">
         <div class="md:flex md:justify-between">
@@ -12,13 +13,13 @@
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                     <ul class="text-gray-600 dark:text-gray-400">
                         <li class="mb-4">
-                            <a href="{{ url()->full() }}#home" class="hover:underline">Home</a>
+                            <a href="{{ linkToId('home') }}" class="hover:underline">Home</a>
                         </li>
                         <li class="mb-4">
-                            <a href="{{ url()->full() }}#explore" class="hover:underline">Explore</a>
+                            <a href="{{ linkToId('explore') }}" class="hover:underline">Explore</a>
                         </li>
                         <li class="mb-4">
-                            <a href="{{ url()->full() }}#about" class="hover:underline">About Us</a>
+                            <a href="{{ linkToId('about') }}" class="hover:underline">About Us</a>
                         </li>
 
                     </ul>

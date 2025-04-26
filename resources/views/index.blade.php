@@ -175,14 +175,6 @@
 
         </div>
     </section>
-    {{-- end about us--}}
-
-    <Script >
-        // $('#loadMore').on('click', function (e) {
-        //     e.preventDefault();
-
-        // });
-    </Script>
 
 
 

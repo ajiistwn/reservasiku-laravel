@@ -1,3 +1,13 @@
+@php
+    function linkToId($id) {
+        $path = request()->path();
+        if ($path == '/' || $path == '' || request()->has('page')) {
+            return "#$id";
+        } else {
+            return "/#$id";
+        }
+    }
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }} " class=" scroll-smooth">
     <head>
@@ -27,8 +37,8 @@
         <x-layouts.footer />
 
         @filamentScripts
-        @vite('resources/js/app.js')
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+        @vite('resources/js/app.js')
 
     </body>
 </html>

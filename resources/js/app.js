@@ -2,6 +2,7 @@ window.addEventListener("scroll", function () {
     const header = document.querySelector("header");
     const navLinks = document.querySelectorAll(".nav-link");
     const loginButton = document.querySelector("a[href='/auth/login']");
+    const profileButton = document.getElementById("text-profile");
     const buttonMenu = document.querySelector(".btn-menu");
     const logo = document.getElementById("logo");
     if (window.scrollY > 0) {
@@ -14,10 +15,21 @@ window.addEventListener("scroll", function () {
             link.classList.remove("text-white");
             link.classList.add("text-black");
         });
-        loginButton.classList.remove("text-white");
-        loginButton.classList.add("text-black");
-        logo.src = "/logo-horizontal.png";
+
+        // loginButton.classList.remove("text-white");
+        // loginButton.classList.add("text-black");
+        // if (logo) {
+        //     logo.src = "/logo-horizontal.png";
+        // }
+        if (profileButton) {
+            profileButton.classList.remove("text-white");
+            profileButton.classList.add("text-black");
+        }
     } else {
+        if (profileButton) {
+            profileButton.classList.add("text-white");
+            profileButton.classList.remove("text-black");
+        }
         header.classList.remove("bg-white", "shadow-md");
         header.classList.add( "bg-black/30");
         header.classList.remove("transition-all", "duration-300");
@@ -29,13 +41,12 @@ window.addEventListener("scroll", function () {
         });
         loginButton.classList.remove("text-black");
         loginButton.classList.add("text-white");
-        logo.src = "/logo-horizontal-white.png";
+        // if (logo) {
+        //     logo.src = "/logo-horizontal-white.png";
+        // }
+
+        // profileButton.classList.add("text-white");
+        // profileButton.classList.remove("text-black");
     }
 });
 
-const observer = lozad('.lozad', {
-    loaded: function(el) {
-      el.classList.add('loaded');
-    }
-});
-observer.observe();
