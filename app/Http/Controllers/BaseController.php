@@ -11,31 +11,12 @@ use Illuminate\Support\Facades\DB;
 class BaseController extends Controller
 {
 
-        // public function index(Request $request){
-        //     $properties = Property::with('rooms')->paginate(8);
-
-        //     if (request()->ajax()) {
-        //         $view = view('data', compact('properties'))->render();
-        //         return response()->json(['html' => $view]);
-        //     }
-
-
-        //     return view('index', compact('properties'));
-        // }
-
-        // public function loadMore(Request $request){
-        //     $page = $request->page ?? 1;
-        //     $properties = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
-
-        //     return view('data', ['properties' => $properties]);
-        // }
-
-
-
-    public function index(Request $request)
+    public function loadOld($page)
     {
         $today = Carbon::today();
-        $paginator = Property::with('rooms')->paginate(8);
+
+
+        $paginator = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
 
         $properties = $paginator->getCollection();
 
@@ -68,6 +49,72 @@ class BaseController extends Controller
         });
 
         // Buat paginator baru dengan collection yang sudah dimodifikasi
+        // $modifiedPaginator = new LengthAwarePaginator(
+        //     $mapped,
+        //     $paginator->total(),
+        //     $paginator->perPage(),
+        //     $paginator->currentPage(),
+        //     ['path' => url()->current()]
+        // );
+        // dd($modifiedPaginator);
+        // dd($mapped);
+        return $mapped;
+    }
+
+
+
+    public function index(Request $request)
+    {
+        $today = Carbon::today();
+
+
+
+        $page = $request->page ?? 1;
+        $oldData = collect();
+
+        if ($page > 1) {
+            for ($i = 1; $i < $page; $i++) {
+                $old = $this->loadOld($i);
+                $oldData = $oldData->merge($old);
+            }
+        }
+
+        $paginator = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
+
+        $properties = $paginator->getCollection();
+
+        // Manipulasi data
+        $mapped = $properties->map(function ($property) use ($today) {
+            $unitRoom = [];
+            $rangePrice = [];
+
+            foreach ($property->rooms->sortBy('price') as $room) {
+                $price = $room->price;
+
+                $activeReservations = DB::table('reservations')
+                    ->where('room_id', $room->id)
+                    ->whereDate('check_in', '<=', $today)
+                    ->whereDate('check_out', '>', $today)
+                    ->count();
+
+                $countRoom = $room->unit - $activeReservations;
+                $unitRoom[] = max($countRoom, 0);
+                $rangePrice[] = $price;
+            }
+
+            $property->priceRange = count($rangePrice) > 1
+                ? [ min($rangePrice), max($rangePrice)]
+                : $rangePrice;
+
+            $property->roomAvailable = array_sum($unitRoom);
+
+            return $property;
+        });
+
+        if ($page > 1) {
+            $mapped = $oldData->merge($mapped);
+        }
+
         $modifiedPaginator = new LengthAwarePaginator(
             $mapped,
             $paginator->total(),
@@ -75,9 +122,12 @@ class BaseController extends Controller
             $paginator->currentPage(),
             ['path' => url()->current()]
         );
-
+        // dd($modifiedPaginator);
         return view('index', ['properties' => $modifiedPaginator]);
     }
+
+
+
 
     public function loadMore(Request $request)
     {

@@ -12,13 +12,13 @@
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                     <ul class="text-gray-600 dark:text-gray-400">
                         <li class="mb-4">
-                            <a href="#home" class="hover:underline">Home</a>
+                            <a href="{{ url()->full() }}#home" class="hover:underline">Home</a>
                         </li>
                         <li class="mb-4">
-                            <a href="#explore" class="hover:underline">Explore</a>
+                            <a href="{{ url()->full() }}#explore" class="hover:underline">Explore</a>
                         </li>
                         <li class="mb-4">
-                            <a href="#about" class="hover:underline">About Us</a>
+                            <a href="{{ url()->full() }}#about" class="hover:underline">About Us</a>
                         </li>
 
                     </ul>

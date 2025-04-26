@@ -1,5 +1,8 @@
 {{-- {{dd($properties);}} --}}
 
+@php
+    $currentUrlWithQuery = url()->full(); // misal "/?search=villa&page=2"
+@endphp
 <x-layouts.app>
 
     {{-- start navbar --}}
@@ -140,11 +143,12 @@
             @endforeach
 
           </div>
-          <div class="w-full text-center">
-
-
-                <button id="loadMore" type="button"  class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
-
+          <div id="loadin" class="w-full text-center ">
+            @if ($properties->hasMorePages())
+                <a href="{{ request()->fullUrlWithQuery(['page' => $properties->currentPage() + 1]) }}#container-card">
+                    <button id="loadMore" type="button"  class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
+                </a>
+            @endif
           </div>
         </div>
         <!-- Filter modal -->
@@ -173,35 +177,13 @@
     </section>
     {{-- end about us--}}
 
+    <Script >
+        // $('#loadMore').on('click', function (e) {
+        //     e.preventDefault();
 
-    <script >
-    //    var ENDPOINT = "{{route('index')}}";
-       var page = 1; // halaman pertama
+        // });
+    </Script>
 
-        // Saat tombol Load More diklik
-        window.onload = function() {
-            $('#loadMore').click(function() {
-                page++;
-                loadMore(page);
-            });
 
-            function loadMore(page) {
-                $.ajax({
-                    url: "{{ route('loadMore') }}",
-                    type: "get",
-                    data: {
-                        page: page
-                    },
-                    dataType: "html",
-                    success: function(data) {
-                        console.log(data);
-                        $('#container-card').append(data);
-                    },
-
-                })
-            }
-        }
-
-    </script>
 
 </x-layouts.app>
