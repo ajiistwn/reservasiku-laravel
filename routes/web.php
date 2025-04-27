@@ -1,6 +1,4 @@
 <?php
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BaseController;
@@ -12,7 +10,7 @@ Route::get('/auth/login', [AuthController::class, 'showLoginForm'])->name('login
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/auth/edit', [AuthController::class, 'edit'])->name('edit');
-Route::post('/auth/edit', [AuthController::class, 'update'])->name('update');
+Route::put('/auth/update', [AuthController::class, 'update'])->name('update');
 Route::get('/profile', [AuthController::class, 'show'])->name('profile');
 
 

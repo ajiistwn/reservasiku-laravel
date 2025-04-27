@@ -8,6 +8,7 @@
         }
     }
 @endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }} " class=" scroll-smooth">
     <head>
@@ -18,6 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="Icon" href="/logo-horizontal.png" type="image/png" />
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
         <title>{{ config('app.name') }}</title>
 
@@ -32,13 +34,37 @@
     </head>
 
     <body class="antialiased ">
+
+
         <x-layouts.header />
         {{ $slot }}
+
+        {{-- @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif --}}
+
         <x-layouts.footer />
 
         @filamentScripts
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-        @vite('resources/js/app.js')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        @vite('resources/js/app.js')
+        @include('sweetalert2::index')
     </body>
 </html>
