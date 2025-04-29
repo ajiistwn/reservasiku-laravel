@@ -2,13 +2,13 @@
     <nav class="border-gray-200 px-4 lg:px-6 py-2.5 ">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="/" class="flex items-center overflow-hidden">
-                <img id="logo"  src="/logo-horizontal-white.png" class="w-auto h-20 sm:h-20" alt="Logo" />
+                <img id="logo"  src="{{ asset('logo-horizontal-white.png') }}" class="w-auto h-20 sm:h-20" alt="Logo" />
             </a>
             <div class="flex items-center lg:order-2">
 
                 @if (Auth::check())
                     <a  href="/profile" class="group flex flex-row justify-items-center  items-center gap-2  dark:text-white  hover:text-cyan-500  font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                        <img class="w-8 border-2 border-transparent rounded-full group-hover:border-cyan-500" src="{{ asset(Auth::user()->image) }}" alt="i{{ Auth::user()->name }}" />
+                        <img class="w-8 border-2 border-transparent rounded-full group-hover:border-cyan-500" src="{{ asset('storage/'.Auth::user()->image) }}" alt="i{{ Auth::user()->name }}" />
                         <p id="user-info" class="text-white group-hover:text-cyan-500">
                             {{ Auth::user()->name }}
                         </p>

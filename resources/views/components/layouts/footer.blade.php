@@ -4,7 +4,7 @@
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="https://flowbite.com" class="flex items-center">
-                    <img src="logo-horizontal.png" class="mr-2 h-25" alt="Logo Reservasiku" />
+                    <img src="{{ asset('logo-horizontal.png') }}" class="mr-2 h-25" alt="Logo Reservasiku" />
 
                 </a>
             </div>

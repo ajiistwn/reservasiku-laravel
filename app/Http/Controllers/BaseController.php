@@ -184,6 +184,7 @@ class BaseController extends Controller
     public function detail($id)
     {
         $property = Property::with('rooms')->findOrFail($id);
+        // dd($property);
         return view('detail', ['property' => $property]);
     }
 

@@ -8,3 +8,12 @@
 
 @plugin "flowbite/plugin";
 @source "../../node_modules/flowbite";
+
+/* Sembunyikan scrollbar secara cross-browser */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE & Edge */
+    scrollbar-width: none;    /* Firefox */
+}

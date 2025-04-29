@@ -87,7 +87,7 @@
                              <!-- Item 1 -->
                              @foreach ($property->media as $item)
                                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                    <img src="{{asset($item)}}" class="absolute top-0 left-0 block object-cover w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{$item}}" />
+                                    <img src="{{ asset( 'storage/' . $item) }}" class="absolute top-0 left-0 block object-cover w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{$item}}" />
                                 </div>
                              @endforeach
                         </div>
@@ -122,7 +122,7 @@
                                 </span>
                             @endif
                         </div>
-                        <a href="#" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+                        <a href="{{route('detail', ['id' => $property->id])}}" class="block text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
                             {{ $property->name }}
                         </a>
                         <p>{{$property->address}}</p>

@@ -109,6 +109,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->label('Image')->circular(),
+                // Tables\Columns\TextColumn::make('image')->label('Image'),
                 // Tables\Columns\TextColumn::make('image')->label('ImageText'),
                 Tables\Columns\TextColumn::make('name')->label('Name'),
                 Tables\Columns\TextColumn::make('email')->label('Email'),

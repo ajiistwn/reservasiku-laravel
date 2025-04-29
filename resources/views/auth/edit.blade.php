@@ -5,28 +5,31 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/159/159037.png" alt="Lock Icon" class="w-6 h-6 mr-2">
                 <h2 class="text-2xl font-semibold text-center text-gray-900 dark:text-white">Update</h2>
             </div>
-            <form action="{{route('update')}}" method="POST" class="space-y-5">
+            <form action="{{route('update')}}" method="POST" class="space-y-5" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="grid gap-6 md:grid-cols-2">
                     <div class="flex justify-center mb-5">
-                        <img class="w-56 border-2 border-transparent rounded-full md:w-35 group-hover:border-cyan-500" src="{{ asset(Auth::user()->image) }}" alt="i{{ Auth::user()->name }}" />
+                        <img class="w-56 border-2 border-transparent rounded-full md:w-35 group-hover:border-cyan-500" src="{{ asset( 'storage/'.Auth::user()->image) }}" alt="i{{ Auth::user()->name }}" />
                     </div>
                     <div class="flex items-center ">
                         <div class="w-full">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="large_size">Large file input</label>
-                            <input class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="large_size" type="file">
-
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="large_size">Input Image</label>
+                            <input class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 @error('image') border-red-500 @enderror" id="large_size" type="file" name="image">
+                            @error('image')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                {{ $message }}
+                            </p>
+                        @enderror
                         </div>
                     </div>
-
 
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                         <input type="text" id="name" name="name" value="{{ Auth::user()->name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('name') border-red-500 @enderror" placeholder="Username" required />
                         @error('name')
-                            <p class="text-sm text-red-600 dark:text-red-400">
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
                                 {{ $message }}
                             </p>
                         @enderror
@@ -36,37 +39,62 @@
                         <input type="tel" id="phone" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('phone') border-red-500 @enderror" placeholder="Enter phone number" pattern="(\d{3}[-\s]?)?\d{4}[-\s]?\d{3}" value="{{ Auth::user()->phone }}"
                         required />
                         @error('phone')
-                            <p class="text-sm text-red-600 dark:text-red-400">
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
                                 {{ $message }}
                             </p>
                         @enderror
                     </div>
                     <div>
                         <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                        <input type="text" id="city" name="city" value="{{ Auth::user()->city }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="City" required />
+                        <input type="text" id="city" name="city" value="{{ Auth::user()->city }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('phone') border-red-500 @enderror" placeholder="City" required />
+                        @error('city')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                     <div>
                         <label for="country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                        <input type="text" id="country" name="country" value="{{ Auth::user()->country }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Country" required />
+                        <input type="text" id="country" name="country" value="{{ Auth::user()->country }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('country') border-red-500 @enderror" placeholder="Country" required />
+                        @error('country')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
-                    <input type="email" id="email" name="email" value="{{ Auth::user()->email }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="E-mail" required />
+                    <input type="email" id="email" name="email" value="{{ Auth::user()->email }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('country') border-red-500 @enderror" placeholder="E-mail" required />
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
                 <div class="mb-6">
                     <label for="password_old" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         Verify data changes with password !!
                     </p>
-                    <input type="password" id="password_old" name="password_old" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" autocomplete="new-password" required/>
+                    <input type="password" id="password_old" name="password_old" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password_old') border-red-500 @enderror" placeholder="•••••••••" autocomplete="new-password" required/>
+                    @error('password_old')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
                 <div class="mb-6">
                     <label for="password_new" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password</label>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                         Fill in if you want to change the password to a new one.
                     </p>
-                    <input type="password" id="password_new" name="password_new" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••"  />
+                    <input type="password" id="password_new" name="password_new" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password_new') border-red-500 @enderror" placeholder="•••••••••"  />
+                    @error('password_new')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <div class="flex gap-2 mb-5">

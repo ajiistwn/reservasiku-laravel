@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use SweetAlert2\Laravel\Swal;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use SweetAlert2\Laravel\Swal;
 
 
 class AuthController extends Controller
@@ -144,16 +147,18 @@ class AuthController extends Controller
         $authUser = Auth::user();
         $user = User::find($authUser->id);
 
+
+
         // Cek dulu password lama
         if (!Hash::check($request->password_old, $user->password)) {
             Swal::fire([
                 'title' => 'Update Failed',
-                'text' => 'Old password does not match.',
+                'text' => 'Old password does not match !',
                 'icon' => 'error',
                 'confirmButtonText' => 'Retry'
             ]);
              // Redirect back with error
-            return back()->withErrors(['password_old' => 'Password lama tidak cocok.'])->withInput();
+            return back()->withErrors(['password_old' => 'Password does not match !'])->withInput();
         }
 
         $validator = Validator::make($request->all(), [
@@ -166,6 +171,7 @@ class AuthController extends Controller
             ],
             'city' => 'required|string|max:100',
             'country' => 'required|string|max:100',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -195,6 +201,23 @@ class AuthController extends Controller
 
             $user->password = Hash::make($request->password_new);
         }
+
+        if ($request->hasFile('image')) {
+            // Hapus file lama kalau ada, kecuali dari folder dummy
+            if ($user->image && Storage::disk('public')->exists( $user->image)) {
+                if (!str_starts_with($user->image, 'storage/uploads/profile/imageDummy')) {
+                    Storage::disk('public')->delete($user->image);
+                }
+            }
+
+            // Upload file baru dengan nama UUID
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('uploads/profile', $filename, 'public');
+
+            $user->image = 'uploads/profile/' . $filename;
+        }
+
 
 
         Swal::fire([
