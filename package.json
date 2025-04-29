@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "chartjs-plugin-datalabels": "^2.2.0",
-        "flowbite": "^3.1.2"
+        "flowbite": "^3.1.2",
+        "lucide": "^0.503.0"
     }
 }

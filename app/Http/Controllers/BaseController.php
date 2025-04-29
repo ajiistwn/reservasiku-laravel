@@ -183,7 +183,7 @@ class BaseController extends Controller
 
     public function detail($id)
     {
-        $property = Property::with('rooms')->findOrFail($id);
+        $property = Property::with(['rooms', 'facilities'])->findOrFail($id);
         // dd($property);
         return view('detail', ['property' => $property]);
     }

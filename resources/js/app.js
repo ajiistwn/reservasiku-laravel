@@ -1,3 +1,10 @@
+import { createIcons } from 'lucide';
+import * as icons from 'lucide';
+
+document.addEventListener('DOMContentLoaded', () => {
+  createIcons({ icons });
+});
+
 window.addEventListener("scroll", function () {
     const header = document.querySelector("header");
     const navLinks = document.querySelectorAll(".nav-link");
@@ -16,11 +23,6 @@ window.addEventListener("scroll", function () {
             link.classList.add("text-black");
         });
 
-        // loginButton.classList.remove("text-white");
-        // loginButton.classList.add("text-black");
-        // if (logo) {
-        //     logo.src = "/logo-horizontal.png";
-        // }
         if (profileButton) {
             profileButton.classList.remove("text-white");
             profileButton.classList.add("text-black");
@@ -41,12 +43,6 @@ window.addEventListener("scroll", function () {
         });
         loginButton.classList.remove("text-black");
         loginButton.classList.add("text-white");
-        // if (logo) {
-        //     logo.src = "/logo-horizontal-white.png";
-        // }
-
-        // profileButton.classList.add("text-white");
-        // profileButton.classList.remove("text-black");
     }
 });
 
