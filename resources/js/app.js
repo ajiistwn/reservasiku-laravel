@@ -46,3 +46,12 @@ window.addEventListener("scroll", function () {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    if (performance.navigation.type === 1) { // 1 = Reload
+        // Hapus query string jika halaman di-refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
+        window.location.replace('/');
+    }
+});
+
+

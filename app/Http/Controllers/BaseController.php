@@ -11,54 +11,57 @@ use Illuminate\Support\Facades\DB;
 class BaseController extends Controller
 {
 
-    public function loadOld($page)
+    public function loadOld($page, Request $request)
     {
         $today = Carbon::today();
+        $checkIn = $request->query('check_in') ? Carbon::parse($request->query('check_in')) : $today;
+        $checkOut = $request->query('check_out') ? Carbon::parse($request->query('check_out')) : $today;
 
+        $property = Property::whereDoesntHave('rooms.reservations', function ($query) use ($checkIn, $checkOut) {
+            $query->whereHas('transaction', function ($transaction) {
+                $transaction->where('status', 'success');
+            })->where(function ($reservation) use ($checkIn, $checkOut) {
+                $reservation->whereBetween('check_in', [$checkIn, $checkOut])
+                  ->orWhereBetween('check_out', [$checkIn, $checkOut])
+                  ->orWhere(function ($res2) use ($checkIn, $checkOut) {
+                      $res2->where('check_in', '<=', $checkIn)
+                         ->where('check_out', '>=', $checkOut);
+                  });
+            });
+        });
 
-        $paginator = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
+        if($request->query('country') && $request->query('city') && $request->query('check_in') && $request->query('check_out') ) {
+            $property->where('country', 'like', '%' .request('country') . '%')
+                ->where('city', 'like', '%' .request('city') . '%');
+        }
 
-        $properties = $paginator->getCollection();
+        $prop = $property->paginate(1, ['*'], 'page', $page);
 
-        // Manipulasi data
-        $mapped = $properties->map(function ($property) use ($today) {
-            $unitRoom = [];
-            $rangePrice = [];
+        $properties = $prop->getCollection()->map(function ($property) use ($checkIn, $checkOut) {
+            // hitung unit yang tersedia
+            $property->unit_available = $property->rooms->sum('unit');
+            // hitung unit di reservasi
+            $property->unit_reserve = $property->rooms->sum(function ($room) use ($checkIn, $checkOut) {
+                return $room->reservations->filter(function ($reservation) use ($checkIn, $checkOut) {
+                    return ($reservation->check_in <= $checkOut && $reservation->check_out >= $checkIn);
+                })->count();
+            });
 
-            foreach ($property->rooms->sortBy('price') as $room) {
-                $price = $room->price;
-
-                $activeReservations = DB::table('reservations')
-                    ->where('room_id', $room->id)
-                    ->whereDate('check_in', '<=', $today)
-                    ->whereDate('check_out', '>', $today)
-                    ->count();
-
-                $countRoom = $room->unit - $activeReservations;
-                $unitRoom[] = max($countRoom, 0);
-                $rangePrice[] = $price;
+            $prices = $property->rooms->pluck('price');
+            if($prices->min() !== $prices->max()){
+                $property->price_range = [
+                    $prices->min(),
+                    $prices->max(),
+                ];
+            } else {
+                $property->price_range = [
+                    $prices->min()
+                ];
             }
-
-            $property->priceRange = count($rangePrice) > 1
-                ? [ min($rangePrice), max($rangePrice)]
-                : $rangePrice;
-
-            $property->roomAvailable = array_sum($unitRoom);
-
             return $property;
         });
 
-        // Buat paginator baru dengan collection yang sudah dimodifikasi
-        // $modifiedPaginator = new LengthAwarePaginator(
-        //     $mapped,
-        //     $paginator->total(),
-        //     $paginator->perPage(),
-        //     $paginator->currentPage(),
-        //     ['path' => url()->current()]
-        // );
-        // dd($modifiedPaginator);
-        // dd($mapped);
-        return $mapped;
+        return $properties;
     }
 
 
@@ -66,7 +69,8 @@ class BaseController extends Controller
     public function index(Request $request)
     {
         $today = Carbon::today();
-
+        $checkIn = $request->query('check_in') ? Carbon::parse($request->query('check_in')) : $today;
+        $checkOut = $request->query('check_out') ? Carbon::parse($request->query('check_out')) : $today;
 
 
         $page = $request->page ?? 1;
@@ -74,117 +78,77 @@ class BaseController extends Controller
 
         if ($page > 1) {
             for ($i = 1; $i < $page; $i++) {
-                $old = $this->loadOld($i);
+                $old = $this->loadOld($i, $request);
                 $oldData = $oldData->merge($old);
             }
         }
 
-        $paginator = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
+        $property = Property::whereDoesntHave('rooms.reservations', function ($query) use ($checkIn, $checkOut) {
+            $query->whereHas('transaction', function ($transaction) {
+                $transaction->where('status', 'success');
+            })->where(function ($reservation) use ($checkIn, $checkOut) {
+                $reservation->whereBetween('check_in', [$checkIn, $checkOut])
+                  ->orWhereBetween('check_out', [$checkIn, $checkOut])
+                  ->orWhere(function ($res2) use ($checkIn, $checkOut) {
+                      $res2->where('check_in', '<=', $checkIn)
+                         ->where('check_out', '>=', $checkOut);
+                  });
+            });
+        });
 
-        $properties = $paginator->getCollection();
+        if($request->query('country') && $request->query('city') && $request->query('check_in') && $request->query('check_out') ) {
+            $property->where('country', 'like', '%' .request('country') . '%')
+                ->where('city', 'like', '%' .request('city') . '%');
+        }
 
-        // Manipulasi data
-        $mapped = $properties->map(function ($property) use ($today) {
-            $unitRoom = [];
-            $rangePrice = [];
+        $prop = $property->paginate(1, ['*'], 'page', $page);
 
-            foreach ($property->rooms->sortBy('price') as $room) {
-                $price = $room->price;
+        $properties = $prop->getCollection()->map(function ($property) use ($checkIn, $checkOut) {
+            // hitung unit yang tersedia
+            $property->unit_available = $property->rooms->sum('unit');
+            // hitung unit di reservasi
+            $property->unit_reserve = $property->rooms->sum(function ($room) use ($checkIn, $checkOut) {
+                return $room->reservations->filter(function ($reservation) use ($checkIn, $checkOut) {
+                    return ($reservation->check_in <= $checkOut && $reservation->check_out >= $checkIn);
+                })->count();
+            });
 
-                $activeReservations = DB::table('reservations')
-                    ->where('room_id', $room->id)
-                    ->whereDate('check_in', '<=', $today)
-                    ->whereDate('check_out', '>', $today)
-                    ->count();
-
-                $countRoom = $room->unit - $activeReservations;
-                $unitRoom[] = max($countRoom, 0);
-                $rangePrice[] = $price;
+            $prices = $property->rooms->pluck('price');
+            if($prices->min() !== $prices->max()){
+                $property->price_range = [
+                    $prices->min(),
+                    $prices->max(),
+                ];
+            } else {
+                $property->price_range = [
+                    $prices->min()
+                ];
             }
-
-            $property->priceRange = count($rangePrice) > 1
-                ? [ min($rangePrice), max($rangePrice)]
-                : $rangePrice;
-
-            $property->roomAvailable = array_sum($unitRoom);
-
             return $property;
         });
 
-        if ($page > 1) {
-            $mapped = $oldData->merge($mapped);
+
+
+        $prop->setCollection($properties);
+
+        if($oldData->isNotEmpty()) {
+            $prop->setCollection($oldData->merge($prop->getCollection()));
         }
 
-        $modifiedPaginator = new LengthAwarePaginator(
-            $mapped,
-            $paginator->total(),
-            $paginator->perPage(),
-            $paginator->currentPage(),
-            ['path' => url()->current()]
-        );
-        // dd($modifiedPaginator);
-        return view('index', ['properties' => $modifiedPaginator]);
-    }
 
-
-
-
-    public function loadMore(Request $request)
-    {
-        if ($request->ajax()) {
-            $page = $request->page ?? 1;
-
-            $paginator = Property::with('rooms')->paginate(8, ['*'], 'page', $page);
-
-            $properties = $paginator->getCollection();
-
-            // Manipulasi data
-            $today = Carbon::today();
-            $mapped = $properties->map(function ($property) use ($today) {
-                $unitRoom = [];
-                $rangePrice = [];
-
-                foreach ($property->rooms->sortBy('price') as $room) {
-                    $price = $room->price;
-
-                    $activeReservations = DB::table('reservations')
-                        ->where('room_id', $room->id)
-                        ->whereDate('check_in', '<=', $today)
-                        ->whereDate('check_out', '>', $today)
-                        ->count();
-
-                    $countRoom = $room->unit - $activeReservations;
-                    $unitRoom[] = max($countRoom, 0);
-                    $rangePrice[] = $price;
-                }
-
-                $property->priceRange = count($rangePrice) > 1
-                    ? [min($rangePrice), max($rangePrice)]
-                    : $rangePrice;
-
-                $property->roomAvailable = array_sum($unitRoom);
-
-                return $property;
-            });
-
-            // Ganti collection dalam paginator dengan hasil yang dimodifikasi
-            $modifiedPaginator = new LengthAwarePaginator(
-                $mapped,
-                $paginator->total(),
-                $paginator->perPage(),
-                $paginator->currentPage(),
-                ['path' => url()->current()]
-            );
-
-            return view('data', ['properties' => $modifiedPaginator])->render();
-        }
-        // dd('not ajax');
+        return view('index', ['properties' => $prop]);
     }
 
     public function detail($id)
     {
-        $property = Property::with(['rooms', 'facilities'])->findOrFail($id);
+        $now = Carbon::now();
+
+        $property = Property::with(['rooms.facilities', 'facilities', 'rooms.reservations' => function ($query) use ($now) {
+            $query->where('check_in', '<=', $now)
+                  ->where('check_out', '>=', $now);
+        }])->findOrFail($id);
         // dd($property);
+
         return view('detail', ['property' => $property]);
     }
 

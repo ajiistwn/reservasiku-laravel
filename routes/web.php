@@ -15,4 +15,5 @@ Route::get('/profile', [AuthController::class, 'show'])->name('profile');
 
 
 Route::get('/', [BaseController::class, 'index'])->name('index');
+Route::get('/loadmore', [BaseController::class, 'loadMore'])->name('loadmore');
 Route::get('/{id}', [BaseController::class, 'detail'])->name('detail');

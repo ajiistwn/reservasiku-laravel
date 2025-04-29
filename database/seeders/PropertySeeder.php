@@ -156,6 +156,12 @@ class PropertySeeder extends Seeder
                 'description' => 'Penginapan strategis di pusat kota Yogyakarta.',
                 'user_id' => 3,
                 'media' => json_encode([
+                    'uploads/property/propertyDummy/propertyBromo1.jpeg',
+                    'uploads/property/propertyDummy/propertyBromo2.jpeg',
+                    'uploads/property/propertyDummy/propertyBromo3.jpeg',
+                    'uploads/property/propertyDummy/propertyBromo4.jpeg',
+                    'uploads/property/propertyDummy/propertyBromo5.jpeg',
+                    'uploads/property/propertyDummy/propertyUbud1.jpeg',
                     'uploads/property/propertyDummy/propertyJogja1.jpeg',
                     'uploads/property/propertyDummy/propertyJogja2.jpeg',
                 ]),
@@ -171,6 +177,7 @@ class PropertySeeder extends Seeder
                 'description' => 'Villa dengan fasilitas keluarga dan udara sejuk.',
                 'user_id' => 2,
                 'media' => json_encode([
+                    'uploads/property/propertyDummy/propertyUbud1.jpeg',
                     'uploads/property/propertyDummy/propertyBatu1.jpeg',
                     'uploads/property/propertyDummy/propertyBatu2.jpeg',
                 ]),

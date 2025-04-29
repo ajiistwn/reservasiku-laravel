@@ -27,44 +27,24 @@
             [x-cloak] {
                 display: none !important;
             }
-        </style>
+            </style>
 
-        @filamentStyles
-        @vite('resources/css/app.css')
-    </head>
+@filamentStyles
+@vite('resources/css/app.css')
+</head>
 
-    <body class="antialiased ">
+<body class="antialiased ">
 
 
-        <x-layouts.header />
-        {{ $slot }}
+    <x-layouts.header />
+    {{ $slot }}
 
-        {{-- @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Sukses',
-                text: '{{ session('success') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        @endif
+    <x-layouts.footer />
 
-        @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '{{ session('error') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        @endif --}}
-
-        <x-layouts.footer />
-
-        @filamentScripts
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        @vite('resources/js/app.js')
-        @include('sweetalert2::index')
+    @filamentScripts
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite('resources/js/app.js')
+    @include('sweetalert2::index')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{config('services.midtrans.clientKey')}}"></script>
     </body>
 </html>

@@ -2,8 +2,6 @@
 {{-- {{dd($property->rooms);}} --}}
 <x-layouts.app>
         <section class="bg-white mt-30 dark:bg-gray-900">
-
-
             <div id="indicators-carousel" class="relative max-w-screen-xl px-4 m-auto overvlow-hidden" data-carousel="static">
                 <!-- Carousel wrapper -->
                 <div class="relative overflow-hidden rounded-lg h-68 md:h-96 xl:h-150">
@@ -112,8 +110,15 @@
                             <div class="px-4 py-6 space-y-4 md:py-8 dark:divide-gray-800">
                                 <div class="grid gap-4">
                                     <div class="flex flex-wrap items-center gap-2">
-                                        <span class="inline-block rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300 md:mb-0"> Reserved 2 </span>
-                                        <span class="inline-block rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300 md:mb-0"> Availible 3 </span>
+                                        @if ($room->unit - $room->reservations->count() > 0 )
+                                            <span class="inline-block rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300 md:mb-0">Availible {{$room->unit - $room->reservations->count()}} </span>
+                                        @endif
+                                        @if ($room->reservations->count() > 0)
+                                            <span class="inline-block rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 md:mb-0">Reserved {{$room->reservations->count()}} </span>
+                                        @endif
+                                        @if ($room->unit - $room->reservations->count() < 1 )
+                                            <span class="inline-block rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300 md:mb-0"> Not Availble </span>
+                                        @endif
                                     </div>
 
                                     <a href="#" class="text-xl font-semibold text-gray-900 hover:underline dark:text-white">{{$room->name}}</a>
@@ -121,7 +126,7 @@
                                 <p class="text-base font-normal text-gray-500 dark:text-gray-400">{{$room->description}}</p>
                                 <div class="flex gap-10">
                                     <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5">
-                                        @foreach ($property->facilities as $item)
+                                        @foreach ($room->facilities as $item)
                                             <a href="#" class="flex items-center gap-1 px-1 py-1 bg-white border border-gray-100 rounded-lg hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                                                 <i data-lucide="{{ $item->icon }}" class="w-3 xl:w-4"></i>
                                                 <span class="text-[10px] xl:text-[12px]  text-gray-900 dark:text-white">{{ $item->name }}</span>
