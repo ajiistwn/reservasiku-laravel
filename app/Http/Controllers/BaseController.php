@@ -2,14 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use Midtrans;
+use Midtrans\Snap;
 use Carbon\Carbon;
 use App\Models\Property;
+use App\Models\Reservation;
+
+
+use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 class BaseController extends Controller
 {
+
+    public function __construct()
+    {
+        Midtrans\Config::$serverKey = config('services.midtrans.serverKey');
+        Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
+        Midtrans\Config::$isSanitized = config('services.midtrans.isSanitized');
+        Midtrans\Config::$is3ds = config('services.midtrans.is3ds');
+    }
 
     public function loadOld($page, Request $request)
     {
@@ -35,7 +52,7 @@ class BaseController extends Controller
                 ->where('city', 'like', '%' .request('city') . '%');
         }
 
-        $prop = $property->paginate(1, ['*'], 'page', $page);
+        $prop = $property->paginate(8, ['*'], 'page', $page);
 
         $properties = $prop->getCollection()->map(function ($property) use ($checkIn, $checkOut) {
             // hitung unit yang tersedia
@@ -101,7 +118,7 @@ class BaseController extends Controller
                 ->where('city', 'like', '%' .request('city') . '%');
         }
 
-        $prop = $property->paginate(1, ['*'], 'page', $page);
+        $prop = $property->paginate(8, ['*'], 'page', $page);
 
         $properties = $prop->getCollection()->map(function ($property) use ($checkIn, $checkOut) {
             // hitung unit yang tersedia
@@ -139,6 +156,64 @@ class BaseController extends Controller
         return view('index', ['properties' => $prop]);
     }
 
+
+    public function reservation(Request $request){
+
+        $checkIn = Carbon::parse($request->check_in);
+        $checkOut = Carbon::parse($request->check_out);
+        $price = $request->room_price;
+
+        $priceHour = $price / 24; // Fixed variable name from $room_price to $price
+        $hour = $checkIn->diffInHours($checkOut);
+        $amount = $priceHour * $hour;
+        $user = Auth::user();
+
+        return DB::transaction(function () use ($request, $amount, $hour, $user, $priceHour, $price) {
+            $order_id = 'sandbox-'. uniqid();
+
+            $reservation = Reservation::create([
+                'user_id' => $user->id,
+                'room_id' => $request->room_id,
+                'check_in' => Carbon::parse($request->check_in),
+                'check_out' => Carbon::parse($request->check_out),
+            ]);
+
+            $payload = [
+                'transaction_details' => [
+                    'order_id'      => $order_id,
+                    'gross_amount'  => $amount,
+                ],
+                'customer_details' => [
+                    'first_name'    => $user->name,
+                    'email'         => $user->email,
+                    'phone'         => $user->phone,
+                ],
+                'item_details' => [
+                    [
+                        'id'       => $request->room_id,
+                        'price'    => $priceHour,
+                        'quantity' => $hour,
+                        'name'     => 'Hour '. $request->room_name. ' '. $request->property_name. ' '. $request->property_country. ','. $request->property_city,
+                    ]
+                ],
+            ];
+
+            $snapToken = Midtrans\Snap::getSnapToken($payload);
+
+            $transaction = Transaction::create([
+                'reservation_id' => $reservation->id,
+                'status' => 'pending',
+                'amount' => $amount,
+                'snap_token' => $snapToken,
+                'order_id' => $order_id,
+            ]);
+
+            return response()->json([
+                'snap_token' => $snapToken,
+            ]);
+        });
+    }
+
     public function detail($id)
     {
         $now = Carbon::now();
@@ -147,9 +222,10 @@ class BaseController extends Controller
             $query->where('check_in', '<=', $now)
                   ->where('check_out', '>=', $now);
         }])->findOrFail($id);
-        // dd($property);
+
 
         return view('detail', ['property' => $property]);
     }
+
 
 }

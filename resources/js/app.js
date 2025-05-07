@@ -50,8 +50,43 @@ document.addEventListener("DOMContentLoaded", function () {
     if (performance.navigation.type === 1) { // 1 = Reload
         // Hapus query string jika halaman di-refresh
         window.history.replaceState({}, document.title, window.location.pathname);
-        window.location.replace('/');
+        // window.location.replace('/');
     }
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.getElementById('defaultModalButton').click();
+});
+
+
+document.querySelectorAll('.btn-reserve').forEach(button => {
+    button.addEventListener('click', function () {
+        const propertyName = this.dataset.propertyName;
+        const propertyAddress = this.dataset.propertyAddress
+        const propertyCountry = this.dataset.propertyCountry;
+        const propertyCity = this.dataset.propertyCity;
+        const roomId = this.dataset.roomId;
+        const roomName = this.dataset.roomName;
+        const roomPrice = this.dataset.roomPrice;
+
+        // const price = this.dataset.price;
+
+        // Contoh isi data ke form input dalam modal
+        document.getElementById('property_name').value = propertyName;
+        document.getElementById('property_address').textContent = propertyAddress;
+        document.getElementById('property_name_display').textContent = propertyName;
+        document.getElementById('property_country_display').textContent = propertyCountry;
+        document.getElementById('property_city_display').textContent = propertyCity;
+        document.getElementById('property_country').value = propertyCountry;
+        document.getElementById('property_city').value = propertyCity;
+        document.getElementById('room_id').value = roomId;
+        document.getElementById('room_name').value = roomName;
+        document.getElementById('room_name_display').textContent = roomName;
+        document.getElementById('room_price').value = roomPrice;
+        document.getElementById('room_price_display').textContent = roomPrice + ' / Night';
+
+        // Buka modalnya (tergantung library/modal yang kamu pakai)
+    });
 });
 
 

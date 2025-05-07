@@ -26,7 +26,7 @@ class TransactionSeeder extends Seeder
             [
                 'reservation_id' => 2,
                 'amount' => 900000,
-                'status' => 'failure',
+                'status' => 'failed',
                 'created_at' => '2025-01-15 13:00:00',
                 'updated_at' => '2025-01-15 13:00:00',
             ],
@@ -40,7 +40,7 @@ class TransactionSeeder extends Seeder
             [
                 'reservation_id' => 4,
                 'amount' => 2550000,
-                'status' => 'failure',
+                'status' => 'failed',
                 'created_at' => '2025-01-15 13:00:00',
                 'updated_at' => '2025-01-15 13:00:00',
             ],
@@ -62,7 +62,7 @@ class TransactionSeeder extends Seeder
             [
                 'reservation_id' => 7,
                 'amount' => 1400000,
-                'status' => 'failure',
+                'status' => 'failed',
                 'created_at' => '2025-02-20 14:00:00',
                 'updated_at' => '2025-02-20 14:00:00',
             ],
@@ -76,7 +76,7 @@ class TransactionSeeder extends Seeder
             [
                 'reservation_id' => 9,
                 'amount' => 1200000,
-                'status' => 'failure',
+                'status' => 'failed',
                 'created_at' => '2025-02-20 14:00:00',
                 'updated_at' => '2025-02-20 14:00:00',
             ],

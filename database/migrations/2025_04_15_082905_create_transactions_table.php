@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->enum('status', ['success','pending', 'failure', 'cancelled', 'expire'])->default('pending');
+            $table->enum('status', ['success','pending', 'failed', 'cancelled', 'expired'])->default('pending');
+            $table->string('order_id')->nullable();
+            $table->string('snap_token')->nullable();
             $table->timestamps();
         });
     }

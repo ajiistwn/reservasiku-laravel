@@ -17,3 +17,6 @@ Route::get('/profile', [AuthController::class, 'show'])->name('profile');
 Route::get('/', [BaseController::class, 'index'])->name('index');
 Route::get('/loadmore', [BaseController::class, 'loadMore'])->name('loadmore');
 Route::get('/{id}', [BaseController::class, 'detail'])->name('detail');
+
+Route::post('/reservation', [BaseController::class, 'reservation'])->name('reservation');
+Route::post('/midtrans/notif', [BaseController::class, 'mitdtransNotificationPopup'])->name('mitdtransNotification');
