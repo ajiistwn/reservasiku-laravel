@@ -20,3 +20,4 @@ Route::get('/{id}', [BaseController::class, 'detail'])->name('detail');
 
 Route::post('/reservation', [BaseController::class, 'reservation'])->name('reservation');
 Route::post('/midtrans/notif', [BaseController::class, 'mitdtransNotificationPopup'])->name('mitdtransNotification');
+Route::post('/midtrans/update', [BaseController::class, 'updateStatusPayment'])->name('mitdtransNotification');

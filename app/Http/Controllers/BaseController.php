@@ -210,6 +210,7 @@ class BaseController extends Controller
 
             return response()->json([
                 'snap_token' => $snapToken,
+                'order_id' => $order_id,
             ]);
         });
     }
@@ -225,6 +226,25 @@ class BaseController extends Controller
 
 
         return view('detail', ['property' => $property]);
+    }
+
+    public function updateStatusPayment(Request $request)
+    {
+        $update = Transaction::where('order_id', $request->order_id)
+            ->update([
+                'status' => match ($request->transaction_status) {
+                    'success' => 'success',
+                    'pending' => 'pending',
+                    'error' => 'failed',
+                    default => 'expired',
+                },
+            ]);
+
+            if ($update) {
+                return response()->json(['message' => 'Status updated successfully']);
+        }
+        return response()->json(['message' => 'Transaction not found'], 404);
+
     }
 
 

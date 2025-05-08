@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Reservation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use SweetAlert2\Laravel\Swal;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -234,6 +236,18 @@ class AuthController extends Controller
 
     public function show(Request $request)
     {
-        return view('auth.profile'); // Adjust the view as necessary
+        $reservations = Reservation::where('user_id', Auth::user()->id)->with('transaction','room.property')->orderBy('created_at', 'desc')->get();
+        if (!Auth::check()) {
+            return redirect()->route('login')->with(
+                'error',
+                'You must be logged in to view this page.'
+            );
+        }
+        foreach ($reservations as $reservation) {
+            $checkIn = Carbon::parse($reservation->check_in);
+            $checkOut = Carbon::parse($reservation->check_out);
+            $reservation->hours = $checkIn->diffInHours($checkOut);
+        }
+        return view('auth.profile', ['reservations' => $reservations]);
     }
 }

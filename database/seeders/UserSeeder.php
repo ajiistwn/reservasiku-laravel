@@ -30,8 +30,8 @@ class UserSeeder extends Seeder
             [
 
                 'name' => 'Afdan',
-                'email' => 'afdan@gmail.com',
-                'phone' => '08123783789',
+                'email' => 'afdanrivaldi87@gmail.com',
+                'phone' => '082123561303',
                 'password' => bcrypt('password'),
                 'role' => 'business',
                 'country' => 'Indonesia',
@@ -43,8 +43,8 @@ class UserSeeder extends Seeder
             [
 
                 'name' => 'Alvin',
-                'email' => 'alvin@gmail.com',
-                'phone' => '08543456789',
+                'email' => 'alvinoegraha@gmail.com',
+                'phone' => '089602927778',
                 'password' => bcrypt('password'),
                 'role' => 'business',
                 'country' => 'Indonesia',

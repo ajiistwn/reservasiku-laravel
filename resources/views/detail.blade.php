@@ -1,8 +1,6 @@
-
-{{-- {{dd($property->rooms);}} --}}
 <x-layouts.app>
         <section class="bg-white mt-30 dark:bg-gray-900">
-            <div id="indicators-carousel" class="relative max-w-screen-xl px-4 m-auto overvlow-hidden" data-carousel="static">
+            <div id="indicators-carousel" class="relative max-w-screen-xl px-4 m-auto overflow-hidden" data-carousel="static">
                 <!-- Carousel wrapper -->
                 <div class="relative overflow-hidden rounded-lg h-68 md:h-96 xl:h-150">
                     <!-- Item 1 -->
@@ -199,12 +197,12 @@
                             <p id="room_price_display"></p>
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                            <input type="text" name="room_id" id="room_id" class="">
-                            <input type="text" name="room_price" id="room_price" class="">
-                            <input type="text" name="room_name" id="room_name" class="">
-                            <input type="text" name="property_name" id="property_name" class="">
-                            <input type="text" name="property_country" id="property_country" class="">
-                            <input type="text" name="property_city" id="property_city" class="">
+                            <input type="text" name="room_id" id="room_id" class="hidden">
+                            <input type="text" name="room_price" id="room_price" class="hidden">
+                            <input type="text" name="room_name" id="room_name" class="hidden">
+                            <input type="text" name="property_name" id="property_name" class="hidden">
+                            <input type="text" name="property_country" id="property_country" class="hidden">
+                            <input type="text" name="property_city" id="property_city" class="hidden">
                                 <div>
                                 <label for="check_in" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Check In </label>
                                 <div class="relative">
@@ -249,42 +247,90 @@
     $('#reservation_form').submit(function (event) {
         event.preventDefault();
         $('#defaultModal').addClass('hidden');
-        $.post('/reservation', {
-            _token:'{{ csrf_token() }}',
-            
-            property_name: $('input#property_name').val(),
-            property_country: $('input#property_country').val(),
-            property_city: $('input#property_city').val(),
-            room_name: $('input#room_name').val(),
-            room_id: $('input#room_id').val(),
-            room_price: $('input#room_price').val(),
-            check_in: $('input#check_in').val(),
-            check_out: $('input#check_out').val()
+        $.ajax({
+    url: '/reservation',
+    type: 'POST',
+    data: {
+        _token: '{{ csrf_token() }}',
+        property_name: $('input#property_name').val(),
+        property_country: $('input#property_country').val(),
+        property_city: $('input#property_city').val(),
+        room_name: $('input#room_name').val(),
+        room_id: $('input#room_id').val(),
+        room_price: $('input#room_price').val(),
+        check_in: $('input#check_in').val(),
+        check_out: $('input#check_out').val()
+    },
+    success: function(result) {
+        let orderId = result.order_id;
+        snap.pay(result.snap_token, {
+            onSuccess: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'success',
+                }, function(response) {
+                    console.log(JSON.stringify(response)); // Fixed the console.log statement
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.data,
+                        text: 'Thank you! Your payment was successful.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onPending: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'pending',
+                }, function(response) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Waiting for payment',
+                        text: 'Please complete the payment.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onError: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'error',
+                }, function(response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Payment Error',
+                        text: 'Sorry for the inconvenience, please restart payment.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onClose: function(){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Payment Closed',
+                    text: 'You closed the payment popup. Please complete the payment later.',
+                }).then(() => {
+                    location.reload();
+                });
+            }
+        });
+    },
+    error: function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to Start Payment',
+            text: 'There was an error starting the payment. Please try again.',
+        }).then(() => {
+            location.reload();
+        });
+    }});
 
-        },
-        function(result, status) {
-            console.log(result);
-            console.log(status);
-            snap.pay(result.snap_token, {
-                onSuccess: function(result){
-                    location.reload();
-                    console.log(result);
-                    },
-                onPending: function(result){
-                    location.reload();
-                    console.log(result);
-                },
-                onError: function(result){
-                    location.reload();
-                    console.log(result);
 
-                },
-                onClose: function(){
-                    location.reload();
-                    console.log(result);
-                }
-            });
-
-        })
     });
 </script>
