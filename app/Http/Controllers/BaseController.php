@@ -159,20 +159,15 @@ class BaseController extends Controller
 
     public function reservation(Request $request){
 
-        if (!Auth::user()) {
-            return redirect(route('login'));
-        }
-
         $checkIn = Carbon::parse($request->check_in);
         $checkOut = Carbon::parse($request->check_out);
         $price = $request->room_price;
 
         $priceHour = $price / 24; // Fixed variable name from $room_price to $price
         $hour = $checkIn->diffInHours($checkOut);
-        $amount = $priceHour * $hour;
         $user = Auth::user();
 
-        return DB::transaction(function () use ($request, $amount, $hour, $user, $priceHour, $price) {
+        return DB::transaction(function () use ($request, $hour, $user, $priceHour, $price) {
             $order_id = 'sandbox-'. uniqid();
 
             $reservation = Reservation::create([
@@ -185,7 +180,7 @@ class BaseController extends Controller
             $payload = [
                 'transaction_details' => [
                     'order_id'      => $order_id,
-                    'gross_amount'  => $amount,
+                    'gross_amount'  => (int)($priceHour * $hour),
                 ],
                 'customer_details' => [
                     'first_name'    => $user->name,
@@ -195,8 +190,8 @@ class BaseController extends Controller
                 'item_details' => [
                     [
                         'id'       => $request->room_id,
-                        'price'    => $priceHour,
-                        'quantity' => $hour,
+                        'price'    => (int)$priceHour,
+                        'quantity' => (int)$hour,
                         'name'     => 'Hour '. $request->room_name. ' '. $request->property_name. ' '. $request->property_country. ','. $request->property_city,
                     ]
                 ],
@@ -207,7 +202,7 @@ class BaseController extends Controller
             $transaction = Transaction::create([
                 'reservation_id' => $reservation->id,
                 'status' => 'pending',
-                'amount' => $amount,
+                'amount' => (int)($priceHour * $hour),
                 'snap_token' => $snapToken,
                 'order_id' => $order_id,
             ]);

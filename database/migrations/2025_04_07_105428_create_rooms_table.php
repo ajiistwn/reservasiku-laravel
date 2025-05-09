@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('price', 12, 2)->nullable();
             $table->text('description');
             $table->string('bed');
-            $table->boolean('status')->default(true);
+            // $table->boolean('status')->default(true);
             $table->integer('unit');
             $table->json('media')->nullable();
             $table->foreignId('property_id')->constrained()->onDelete('cascade');

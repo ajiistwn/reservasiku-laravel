@@ -21,7 +21,6 @@ class RoomSeeder extends Seeder
                 'price' => 450000,
                 'description' => 'Kamar dengan pemandangan sawah dan balkon pribadi.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 1,
                 'media' => json_encode([
@@ -42,7 +41,6 @@ class RoomSeeder extends Seeder
                 'price' => 300000,
                 'description' => 'Kamar nyaman dengan fasilitas lengkap.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 5,
                 'property_id' => 1,
                 'media' => json_encode([
@@ -60,7 +58,6 @@ class RoomSeeder extends Seeder
                 'price' => 550000,
                 'description' => 'Suite dengan pemandangan Gunung Bromo.',
                 'bed' => '2 Twin Bed',
-                'status' => true,
                 'unit' => 2,
                 'media' => json_encode([
                     'uploads/room/roomDummy/roomBromo1.jpeg',
@@ -75,7 +72,6 @@ class RoomSeeder extends Seeder
                 'price' => 700000,
                 'description' => 'Kamar langsung menghadap pantai dengan teras.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 4,
                 'property_id' => 3,
                 'media' => json_encode([
@@ -91,7 +87,6 @@ class RoomSeeder extends Seeder
                 'price' => 600000,
                 'description' => 'Kamar keluarga dengan pemandangan kebun.',
                 'bed' => '2 Double Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 4,
                 'media' => json_encode([
@@ -106,7 +101,6 @@ class RoomSeeder extends Seeder
                 'price' => 850000,
                 'description' => 'Suite romantis dengan kolam renang pribadi.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 5,
                 'media' => json_encode([
@@ -123,7 +117,6 @@ class RoomSeeder extends Seeder
                 'price' => 500000,
                 'description' => 'Kamar superior dekat pantai, cocok untuk pasangan.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 4,
                 'property_id' => 5,
                 'media' => json_encode([
@@ -140,7 +133,6 @@ class RoomSeeder extends Seeder
                 'price' => 350000,
                 'description' => 'Kamar ramah lingkungan dengan taman pribadi.',
                 'bed' => '1 Double Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 4,
                 'media' => json_encode([
@@ -156,7 +148,6 @@ class RoomSeeder extends Seeder
                 'price' => 650000,
                 'description' => 'Kamar dengan pemandangan laut dan balkon pribadi.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 6,
                 'media' => json_encode([
@@ -171,7 +162,6 @@ class RoomSeeder extends Seeder
                 'price' => 480000,
                 'description' => 'Kamar menghadap taman dengan fasilitas lengkap.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 4,
                 'property_id' => 6,
                 'media' => json_encode([
@@ -186,7 +176,6 @@ class RoomSeeder extends Seeder
                 'price' => 550000,
                 'description' => 'Kamar luas dengan pemandangan pegunungan.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 7,
                 'media' => json_encode([
@@ -201,7 +190,6 @@ class RoomSeeder extends Seeder
                 'price' => 400000,
                 'description' => 'Kamar nyaman cocok untuk pasangan.',
                 'bed' => '1 Double Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 8,
                 'media' => json_encode([
@@ -216,7 +204,6 @@ class RoomSeeder extends Seeder
                 'price' => 520000,
                 'description' => 'Kamar menghadap langsung ke Jalan Malioboro.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 9,
                 'media' => json_encode([
@@ -231,7 +218,6 @@ class RoomSeeder extends Seeder
                 'price' => 600000,
                 'description' => 'Cocok untuk keluarga dengan anak-anak.',
                 'bed' => '2 Queen Beds',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 10,
                 'media' => json_encode([
@@ -246,7 +232,6 @@ class RoomSeeder extends Seeder
                 'price' => 850000,
                 'description' => 'Nikmati matahari terbenam dari balkon.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 1,
                 'property_id' => 11,
                 'media' => json_encode([
@@ -261,7 +246,6 @@ class RoomSeeder extends Seeder
                 'price' => 380000,
                 'description' => 'Kamar dilengkapi meja kerja dan Wi-Fi cepat.',
                 'bed' => '1 Single Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 12,
                 'media' => json_encode([
@@ -276,7 +260,6 @@ class RoomSeeder extends Seeder
                 'price' => 460000,
                 'description' => 'Kamar nyaman dengan pemanas dan view pegunungan.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 13,
                 'media' => json_encode([
@@ -291,7 +274,6 @@ class RoomSeeder extends Seeder
                 'price' => 700000,
                 'description' => 'Apartemen eksekutif dengan dapur pribadi.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 1,
                 'property_id' => 9,
                 'media' => json_encode([
@@ -306,7 +288,6 @@ class RoomSeeder extends Seeder
                 'price' => 550000,
                 'description' => 'Ruang luas cocok untuk liburan keluarga.',
                 'bed' => '2 Queen Beds',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 10,
                 'media' => json_encode([
@@ -322,7 +303,6 @@ class RoomSeeder extends Seeder
                 'price' => 1400000,
                 'description' => 'Kamar besar dengan balkon menghadap laut.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 15,
                 'media' => json_encode([
@@ -338,7 +318,6 @@ class RoomSeeder extends Seeder
                 'price' => 2500000,
                 'description' => 'Kamar kost lengkap dengan AC dan kamar mandi dalam.',
                 'bed' => '1 Single Bed',
-                'status' => true,
                 'unit' => 1,
                 'property_id' => 12,
                 'media' => json_encode([
@@ -354,7 +333,6 @@ class RoomSeeder extends Seeder
                 'price' => 780000,
                 'description' => 'Kamar nyaman dengan pemandangan Gunung Penanggungan.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 13,
                 'media' => json_encode([
@@ -370,7 +348,6 @@ class RoomSeeder extends Seeder
                 'price' => 400000,
                 'description' => 'Cocok untuk backpacker atau perjalanan singkat.',
                 'bed' => '1 Single Bed',
-                'status' => true,
                 'unit' => 3,
                 'property_id' => 14,
                 'media' => json_encode([
@@ -385,7 +362,6 @@ class RoomSeeder extends Seeder
                 'price' => 1900000,
                 'description' => 'Villa dengan private pool dan view matahari terbit.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 1,
                 'property_id' => 15,
                 'media' => json_encode([
@@ -401,7 +377,6 @@ class RoomSeeder extends Seeder
                 'price' => 800000,
                 'description' => 'Fasilitas WiFi, meja belajar, dan kasur springbed.',
                 'bed' => '1 Single Bed',
-                'status' => true,
                 'unit' => 5,
                 'property_id' => 16,
                 'media' => json_encode([
@@ -416,7 +391,6 @@ class RoomSeeder extends Seeder
                 'price' => 520000,
                 'description' => 'Kamar luas untuk keluarga kecil.',
                 'bed' => '2 Queen Beds',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 17,
                 'media' => json_encode([
@@ -432,7 +406,6 @@ class RoomSeeder extends Seeder
                 'price' => 1700000,
                 'description' => 'Nikmati suasana sejuk dan private di Dago Hills.',
                 'bed' => '1 King Bed',
-                'status' => true,
                 'unit' => 1,
                 'property_id' => 18,
                 'media' => json_encode([
@@ -448,7 +421,6 @@ class RoomSeeder extends Seeder
                 'price' => 950000,
                 'description' => 'Kamar dengan AC dan lemari besar.',
                 'bed' => '1 Single Bed',
-                'status' => true,
                 'unit' => 4,
                 'property_id' => 19,
                 'media' => json_encode([
@@ -463,7 +435,6 @@ class RoomSeeder extends Seeder
                 'price' => 720000,
                 'description' => 'Kamar romantis menghadap Danau Toba.',
                 'bed' => '1 Queen Bed',
-                'status' => true,
                 'unit' => 2,
                 'property_id' => 20,
                 'media' => json_encode([

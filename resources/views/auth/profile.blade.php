@@ -151,6 +151,7 @@
                                             <button id="btn-pay"
                                             type="button"
                                             data-token="{{ $reservation->transaction->snap_token }}"
+                                            data-order-id="{{ $reservation->transaction->order_id }}"
                                             class="text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:Payus:ring-Payw-800 font-Paym rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                                             >Pay
                                             </button>
@@ -212,6 +213,7 @@
 
     $('#btn-pay').on('click', function () {
         var snapToken = $(this).data('token');
+        var orderId = $(this).data('order-id');
 
         snap.pay(snapToken, {
             onSuccess: function(result){
@@ -223,7 +225,7 @@
                     console.log(JSON.stringify(response)); // Fixed the console.log statement
                     Swal.fire({
                         icon: 'success',
-                        title: response.data,
+                        title: 'Payment Successful',
                         text: 'Thank you! Your payment was successful.',
                     }).then(() => {
                         location.reload();
@@ -231,7 +233,7 @@
                 });
             },
             onPending: function(result){
-                $.post('/midtrans/update', {
+                $.post('{{route('midtransNotification')}}', {
                     _token: '{{ csrf_token() }}',
                     order_id: orderId,
                     transaction_status: 'pending',
@@ -246,7 +248,7 @@
                 });
             },
             onError: function(result){
-                $.post('/midtrans/update', {
+                $.post('{{route('midtransNotification')}}', {
                     _token: '{{ csrf_token() }}',
                     order_id: orderId,
                     transaction_status: 'error',

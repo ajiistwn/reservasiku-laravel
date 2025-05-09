@@ -73,6 +73,7 @@
         <x-form-reservation :property="$property" />
 </x-layouts.app>
 
+
 <script>
     $('#reservation_form').submit(function (event) {
         $('#defaultModal').addClass('hidden');
@@ -173,7 +174,8 @@
             }
         });
     },
-    error: function() {
+    error: function(err) {
+        console.log(err);
         Swal.fire({
             icon: 'error',
             title: 'Failed Payment',
