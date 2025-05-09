@@ -27,13 +27,13 @@
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="{{ linkToId('home') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link text-bold hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+                        <a href="{{ linkToId('home') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link text-bold hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Home</a>
                     </li>
                     <li>
-                        <a href="{{ linkToId('explore') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Explore</a>
+                        <a href="{{ linkToId('explore') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Explore</a>
                     </li>
                     <li>
-                        <a href="{{ linkToId('about') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
+                        <a href="{{ linkToId('about') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
                     </li>
                 </ul>
             </div>

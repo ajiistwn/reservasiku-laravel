@@ -88,7 +88,7 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/login';
+                    window.location.href = '/auth/login';
                 } else {
                     // User clicked cancel, do nothing
                     location.reload();
