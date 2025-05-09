@@ -12,12 +12,17 @@ window.addEventListener("scroll", function () {
     const profileButton = document.getElementById("text-profile");
     const buttonMenu = document.querySelector(".btn-menu");
     const logo = document.getElementById("logo");
-    if (window.scrollY > 0) {
+
+    const isDetailPage = /^\/\d+$/.test(window.location.pathname);
+
+    if (isDetailPage || window.scrollY > 0) {
         header.classList.add("bg-white", "shadow-md");
-        header.classList.remove( "bg-black/30");
+        header.classList.remove("bg-black/30");
         header.classList.add("transition-all", "duration-300");
+
         buttonMenu.classList.remove("text-white");
         buttonMenu.classList.add("text-black");
+
         navLinks.forEach(link => {
             link.classList.remove("text-white");
             link.classList.add("text-black");
@@ -27,23 +32,69 @@ window.addEventListener("scroll", function () {
             profileButton.classList.remove("text-white");
             profileButton.classList.add("text-black");
         }
-    } else {
-        if (profileButton) {
-            profileButton.classList.add("text-white");
-            profileButton.classList.remove("text-black");
+
+        if (loginButton) {
+            loginButton.classList.remove("text-white");
+            loginButton.classList.add("text-black");
         }
+    } else {
         header.classList.remove("bg-white", "shadow-md");
-        header.classList.add( "bg-black/30");
+        header.classList.add("bg-black/30");
         header.classList.remove("transition-all", "duration-300");
+
         buttonMenu.classList.add("text-white");
         buttonMenu.classList.remove("text-black");
+
         navLinks.forEach(link => {
             link.classList.remove("text-black");
             link.classList.add("text-white");
         });
-        loginButton.classList.remove("text-black");
-        loginButton.classList.add("text-white");
+
+        if (profileButton) {
+            profileButton.classList.add("text-white");
+            profileButton.classList.remove("text-black");
+        }
+
+        if (loginButton) {
+            loginButton.classList.add("text-white");
+            loginButton.classList.remove("text-black");
+        }
     }
+
+    // if (window.scrollY > 0) {
+    //     header.classList.add("bg-white", "shadow-md");
+    //     header.classList.remove( "bg-black/30");
+    //     header.classList.add("transition-all", "duration-300");
+    //     buttonMenu.classList.remove("text-white");
+    //     buttonMenu.classList.add("text-black");
+    //     navLinks.forEach(link => {
+    //         link.classList.remove("text-white");
+    //         link.classList.add("text-black");
+    //     });
+
+    //     if (profileButton) {
+    //         profileButton.classList.remove("text-white");
+    //         profileButton.classList.add("text-black");
+    //     }
+    // } else {
+    //     if (profileButton) {
+    //         profileButton.classList.add("text-white");
+    //         profileButton.classList.remove("text-black");
+    //     }
+    //     header.classList.remove("bg-white", "shadow-md");
+    //     header.classList.add( "bg-black/30");
+    //     header.classList.remove("transition-all", "duration-300");
+    //     buttonMenu.classList.add("text-white");
+    //     buttonMenu.classList.remove("text-black");
+    //     navLinks.forEach(link => {
+    //         link.classList.remove("text-black");
+    //         link.classList.add("text-white");
+    //     });
+    //     loginButton.classList.remove("text-black");
+    //     loginButton.classList.add("text-white");
+    // }
+
+
 });
 
 document.addEventListener("DOMContentLoaded", function () {

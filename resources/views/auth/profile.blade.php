@@ -148,7 +148,12 @@
                                     </td>
                                     <td class="flex items-center justify-end px-4 py-3">
                                         @if ($reservation->transaction->status == 'pending')
-                                            <button type="button" class="text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:Payus:ring-Payw-800 font-Paym rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Pay</button>
+                                            <button id="btn-pay"
+                                            type="button"
+                                            data-token="{{ $reservation->transaction->snap_token }}"
+                                            class="text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:Payus:ring-Payw-800 font-Paym rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                            >Pay
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -202,3 +207,70 @@
         </div>
         </section>
 </x-layouts.app>
+
+<script>
+
+    $('#btn-pay').on('click', function () {
+        var snapToken = $(this).data('token');
+
+        snap.pay(snapToken, {
+            onSuccess: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'success',
+                }, function(response) {
+                    console.log(JSON.stringify(response)); // Fixed the console.log statement
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.data,
+                        text: 'Thank you! Your payment was successful.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onPending: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'pending',
+                }, function(response) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Waiting for payment',
+                        text: 'Please complete the payment.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onError: function(result){
+                $.post('/midtrans/update', {
+                    _token: '{{ csrf_token() }}',
+                    order_id: orderId,
+                    transaction_status: 'error',
+                }, function(response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Payment Error',
+                        text: 'Sorry for the inconvenience, please restart payment.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+            onClose: function(){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Payment Closed',
+                    text: 'You closed the payment popup. Please complete the payment later.',
+                }).then(() => {
+                    location.reload();
+                });
+            }
+        });
+    });
+
+
+</script>

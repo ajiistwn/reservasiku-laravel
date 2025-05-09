@@ -1,4 +1,4 @@
-<header class="fixed top-0 left-0 right-0 z-50 border-gray-200 bg-black/30 dark:bg-gray-900 ">
+<header class="fixed top-0 left-0 right-0 z-50 border-gray-200 dark:bg-gray-900 ">
     <nav class="border-gray-200 px-4 lg:px-6 py-2.5 ">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
             <a href="/" class="flex items-center overflow-hidden">
@@ -27,13 +27,13 @@
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="{{ linkToId('home') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link text-bold hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-white lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+                        <a href="{{ linkToId('home') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link text-bold hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Home</a>
                     </li>
                     <li>
-                        <a href="{{ linkToId('explore') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-white lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Explore</a>
+                        <a href="{{ linkToId('explore') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">Explore</a>
                     </li>
                     <li>
-                        <a href="{{ linkToId('about') }}" class="block py-2 pl-3 pr-4 text-white border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-white lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
+                        <a href="{{ linkToId('about') }}" class="block py-2 pl-3 pr-4 border-b border-gray-100 nav-link hover:text-cyan-500 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark: lg:dark:hover:text-cyan-500 dark:hover:bg-gray-700 dark:hover:text-cyan-500 lg:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
                     </li>
                 </ul>
             </div>
@@ -42,17 +42,42 @@
 </header>
 
 <script>
-    $(window).on('scroll', function() {
-        let scroll = $(window).scrollTop();
-        let $headerButton = $('#login-button, #user-info'); // gabung selector
+    $(document).ready(function () {
+        let $headerButton = $('#login-button, #user-info');
         let $logo = $('#logo');
 
-        if (scroll > 0) {
-            $headerButton.removeClass('text-white').addClass('text-black');
-            $logo.attr('src', '/logo-horizontal.png');
-        } else {
-            $headerButton.removeClass('text-black').addClass('text-white');
-            $logo.attr('src', '/logo-horizontal-white.png');
+        // Cek apakah path URL adalah angka, misalnya /1, /23, /99
+        const isDetailPage = /^\/\d+$/.test(window.location.pathname);
+
+        function updateHeader(scroll) {
+            if (scroll > 0 || isDetailPage) {
+                $headerButton.removeClass('text-white').addClass('text-black');
+                $logo.attr('src', '/logo-horizontal.png');
+            } else {
+                $headerButton.removeClass('text-black').addClass('text-white');
+                $logo.attr('src', '/logo-horizontal-white.png');
+            }
         }
+
+        // Jalankan saat halaman pertama kali dibuka
+        updateHeader($(window).scrollTop());
+
+        // Jalankan saat user scroll
+        $(window).on('scroll', function () {
+            updateHeader($(window).scrollTop());
+        });
     });
+    // $(window).on('scroll', function() {
+    //     let scroll = $(window).scrollTop();
+    //     let $headerButton = $('#login-button, #user-info'); // gabung selector
+    //     let $logo = $('#logo');
+
+    //     if (scroll > 0) {
+    //         $headerButton.removeClass('text-white').addClass('text-black');
+    //         $logo.attr('src', '/logo-horizontal.png');
+    //     } else {
+    //         $headerButton.removeClass('text-black').addClass('text-white');
+    //         $logo.attr('src', '/logo-horizontal-white.png');
+    //     }
+    // });
 </script>

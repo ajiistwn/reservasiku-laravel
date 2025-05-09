@@ -159,6 +159,10 @@ class BaseController extends Controller
 
     public function reservation(Request $request){
 
+        if (!Auth::user()) {
+            return redirect(route('login'));
+        }
+
         $checkIn = Carbon::parse($request->check_in);
         $checkOut = Carbon::parse($request->check_out);
         $price = $request->room_price;
