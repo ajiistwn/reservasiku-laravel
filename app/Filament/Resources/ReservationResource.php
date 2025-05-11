@@ -226,8 +226,8 @@ class ReservationResource extends Resource
                     ->columnSpan(1)
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'failure' => 'danger',
-                        'expire' => 'danger',
+                        'failed' => 'danger',
+                        'expired' => 'danger',
                         'cancelled' => 'gray',
                         'pending' => 'warning',
                         'success' => 'success',
@@ -303,8 +303,8 @@ class ReservationResource extends Resource
                     ->label('Payment Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'failure' => 'danger',
-                        'expire' => 'danger',
+                        'failed' => 'danger',
+                        'expired' => 'danger',
                         'cancelled' => 'gray',
                         'pending' => 'warning',
                         'success' => 'success',
