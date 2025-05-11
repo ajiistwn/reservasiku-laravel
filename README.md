@@ -1,4 +1,12 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="./public/logo-horizontal-white.png" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+    <a href="https://github.com/ajiistwn/reservasiku-laravel" target="_blank">    
+        <picture>
+            <source srcset="./public/logo-horizontal-white.png" media="(prefers-color-scheme: dark)">
+            <img src="./public/logo-horizontal.png" width="400" alt="Laravel Logo">
+        </picture>
+   </a>     
+    
+</p>
 
 # About Reservasiku
 
