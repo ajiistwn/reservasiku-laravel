@@ -18,7 +18,6 @@ My reservation web application is an online reservation web. This web consists o
 - **[Alvin Nugraha Saputra](mailto:alvinoegraha@gmail.com)** : UI/UX Design & Researcher
 - **[Aji Setiawan](https://github.com/ajiistwn)** : Tech Lead & Fullstack Developer
 - **[Akbar Fazar Fadililah](https://github.com/fazar212)** : Web Developer
-Developer
 - **[Sauqi Zamani](https://)** : Academic Writer
 - **[Axel Elyas Ginting](https://)** : Academic Writer
 
